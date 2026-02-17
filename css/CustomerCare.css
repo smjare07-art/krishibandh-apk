@@ -1,0 +1,107 @@
+.cc-page {
+  padding: 25px;
+  font-family: "Poppins", sans-serif;
+  background: #f2f8f2;
+}
+
+/* HEADER */
+.cc-header {
+  background: #2f8f2f;
+  color: white;
+  padding: 25px;
+  border-radius: 14px;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.cc-header h1 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.cc-header p {
+  margin-top: 6px;
+  opacity: 0.9;
+}
+
+/* HELP GRID */
+.cc-help-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 25px;
+}
+
+.cc-card {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* CONTACT */
+.cc-contact {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.cc-contact-card {
+  flex: 1;
+  min-width: 180px;
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  cursor: pointer;
+}
+
+.cc-contact-card p {
+  margin: 6px 0;
+}
+
+.cc-contact-card span {
+  font-size: 13px;
+  color: gray;
+}
+
+/* TICKET */
+.cc-ticket {
+  background: white;
+  padding: 22px;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.cc-ticket h3 {
+  margin-bottom: 12px;
+  color: #1f5f1f;
+}
+
+.cc-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #bcdcbc;
+  font-size: 15px;
+}
+
+.cc-btn {
+  width: 100%;
+  padding: 14px;
+  background: #2f8f2f;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cc-btn:hover {
+  background: #236f23;
+}

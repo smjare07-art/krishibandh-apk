@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <title>Crop Disease Detection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 15px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2e7d32;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 15px;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 10px;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .result {
+      font-size: 18px;
+      font-weight: bold;
+      color: #d32f2f;
+      margin-top: 10px;
+    }
+
+    .suggestion {
+      margin-top: 10px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    button {
+      width: 100%;
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🌾 Crop Disease Detection</h2>
+
+  <div class="card">
+    <label>📷 पिकाचा फोटो अपलोड करा</label>
+    <input type="file" accept="image/*" onchange="previewImage(event)">
+    <img id="preview">
+  </div>
+
+  <div class="card">
+    <div class="result" id="resultText">⏳ Result येईल इथे</div>
+    <div class="suggestion" id="suggestionText">
+      पिकाचा रोग ओळखल्यानंतर उपाय येथे दिसेल.
+    </div>
+  </div>
+
+  <button onclick="analyzeImage()">🔍 Analyse Crop</button>
+
+  <script>
+  let selectedFile;
+
+  function previewImage(event) {
+    selectedFile = event.target.files[0];
+    const img = document.getElementById("preview");
+    img.src = URL.createObjectURL(selectedFile);
+    img.style.display = "block";
+  }
+
+  async function analyzeImage() {
+    if (!selectedFile) {
+      alert("फोटो निवडा");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", selectedFile);
+
+    document.getElementById("resultText").innerText = "⏳ analysing...";
+    document.getElementById("suggestionText").innerText = "";
+
+    try {
+      const res = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await res.json();
+
+      document.getElementById("resultText").innerText =
+        "🦠 " + data.disease + " (" + data.confidence + "%)";
+
+      document.getElementById("suggestionText").innerText =
+        "➡️ योग्य फंगीसाईड वापरा\n➡️ रोगट पाने काढा\n➡️ पाणी नियंत्रण ठेवा";
+
+    } catch (e) {
+      document.getElementById("resultText").innerText = "❌ Server error";
+    }
+  }
+</script>
+
+
+</body>
+</html>

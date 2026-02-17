@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="mr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>माझी प्रोफाइल</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/profile.css" />
+  </head>
+
+  <body>
+    <div class="topbar">
+      <span onclick="history.back()">⬅</span>
+      <h2>माझी प्रोफाइल</h2>
+    </div>
+
+    <div class="profile-card">
+      <div class="avatar">👤</div>
+
+      <p><b>नाव:</b> <span id="pName">Loading...</span></p>
+      <p><b>Email:</b> <span id="pEmail">Loading...</span></p>
+      <p><b>Phone:</b> <span id="pPhone">Loading...</span></p>
+      <p><b>Location:</b> <span id="pLocation">Loading...</span></p>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+
+    <!-- JS FILES -->
+    
+    <script  src="../js/profile.js"></script>
+  </body>
+</html>

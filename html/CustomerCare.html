@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <title>Krishibandh Customer Care</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/CustomerCare.css">
+</head>
+<body>
+
+  <div class="cc-page">
+
+    <!-- HEADER -->
+    <div class="cc-header">
+      <h1>🛡️ Krishibandh Customer Care</h1>
+      <p>आम्ही तुमच्या सेवेसाठी सदैव तयार आहोत</p>
+    </div>
+
+    <!-- HELP OPTIONS -->
+    <div class="cc-help-grid">
+      <div class="cc-card">🔐 Login समस्या</div>
+      <div class="cc-card">🌾 पिक विक्री मदत</div>
+      <div class="cc-card">💰 पेमेंट समस्या</div>
+      <div class="cc-card">🚚 डिलिव्हरी प्रश्न</div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="cc-contact">
+      <div class="cc-contact-card">
+        📞 <b>Call Support</b>
+        <p>+62 831-6386-1179</p>
+        <span>9 AM – 6 PM</span>
+      </div>
+
+      <div class="cc-contact-card" onclick="openChat()">
+        💬 <b>Live Chat</b>
+        <p>तत्काळ मदत</p>
+      </div>
+
+      <div class="cc-contact-card">
+        📧 <b>Email</b>
+        <p>support@krishibandh.com</p>
+      </div>
+    </div>
+
+    <!-- TICKET FORM -->
+    <div class="cc-ticket">
+      <h3>📝 तक्रार नोंदवा</h3>
+
+      <select class="cc-input" id="issueType">
+        <option value="">समस्या निवडा</option>
+        <option value="Payment">Payment</option>
+        <option value="Login">Login</option>
+        <option value="Order">Order</option>
+        <option value="Delivery">Delivery</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <textarea
+        class="cc-input"
+        id="issueText"
+        placeholder="तुमची समस्या लिहा"
+      ></textarea>
+
+      <button class="cc-btn" onclick="submitTicket()">Submit Ticket</button>
+    </div>
+
+  </div>
+
+  <script src="../js/CustomerCare.js"></script>
+</body>
+</html>

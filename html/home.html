@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Krishibandh Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css/home.css" />
+</head>
+<body>
+
+<!-- OVERLAY -->
+<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<div id="sidebar" class="sidebar">
+  <div class="profile">
+    <div class="avatar"><img src="../img/e6814faf-e42b-4189-8751-ac250f349c81.png" alt=""></div>
+    <h3 id="usernameSb">User</h3>
+    <p id="phoneSb"></p>
+  </div>
+
+  <ul class="menu">
+    <li id="sbProfile" onclick="go('profile.html')"></li>
+    <li id="sbLeaderboard"></li>
+    <li id="sbExpense"></li>
+    <li id="sbPartner"></li>
+    <li id="sbAbout" onclick="go('aboutus.html')"></li>
+    <li class="logout" id="sbLogout" onclick="logout()"></li>
+  </ul>
+
+  <div class="footer" id="develop"></div>
+</div>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <span class="menu" onclick="openSidebar()">☰</span>
+  <h1 id="appName">Krishibandh</h1>
+  <span class="bell" onclick="go('notifiction.html')">🔔</span>
+</header>
+
+<!-- GREETING -->
+<section class="greet-box">
+  <div>
+    <h3>
+      <span id="greeting"></span>
+      <span id="homeUserName">User</span>
+    </h3>
+    <p id="weatherDate"></p>
+  </div>
+</section>
+
+<!-- WEATHER -->
+<section class="weather-card">
+  <div>
+    <h2 id="weatherTemp">--°C</h2>
+    <p id="weatherCity">---</p>
+  </div>
+  <div class="cloud" id="weatherIcon">☁️</div>
+</section>
+
+<!-- GRID -->
+<section class="grid">
+  <div class="card" onclick="go('company.html')">
+    <span class="badge" id="companyCount">0</span>
+    <div class="icon">
+      <img src="../img/IMG-20260201-WA0007.jpg.jpeg" alt="Company" />
+    </div>
+    <p id="companyReq"></p>
+  </div>
+
+  <div class="card" onclick="go('crop.html')">
+    <div class="icon"><img src="../img/IMG-20260201-WA0014.jpg.jpeg" alt=""></div>
+    <p id="cropAdvice"></p>
+  </div>
+
+  <div class="card" onclick="go('soil.html')">
+    <div class="icon"><img src="../img/Under Deveploment.jpg" alt=""></div>
+    <p id="soilCard"></p>
+  </div>
+
+  <div class="card" onclick="go('fertilizer.html')">
+    <div class="icon"><img src="../img/Under Deveploment.jpg" alt=""></div>
+    <p id="fertilizer"></p>
+  </div>
+
+  <div class="card" onclick="go('climate.html')">
+    <div class="icon"><img src="../img/IMG-20260201-WA0011.jpg.jpeg" alt=""></div>
+    <p id="climate"></p>
+  </div>
+
+  <div class="card" onclick="go('warehouse.html')">
+    <div class="icon"><img src="../img/ChatGPT Image Feb 2, 2026, 03_23_24 PM.png" alt=""></div>
+    <p id="pest"></p>
+  </div>
+
+  <div class="card" onclick="go('market.html')">
+    <div class="icon"><img src="../img/IMG-20260201-WA0009.jpg.jpeg" alt=""></div>
+    <p id="market"></p>
+  </div>
+
+  <div class="card" onclick="go('history.html')">
+    <div class="icon"><img src="../img/IMG-20260201-WA0010.jpg.jpeg" alt=""></div>
+    <p id="history"></p>
+  </div>
+
+  <div class="card" onclick="go('CustomerCare.html')">
+    <div class="icon"><img src="../img/IMG-20260201-WA0016.jpg.jpeg" alt=""></div>
+    <p id="warehouse"></p>
+  </div>
+</section>
+
+<!-- BOT -->
+<button class="bot" onclick="go('bot.html')"><img src="../img/79b9cd72-2c06-441c-93ce-cf6232e4c26e.png" alt=""></button>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <div><img src="../img/b9c81b2e-6ae0-48b7-9130-33b5fc4f53cc (1).png" alt=""><span id="navHome"></span></div>
+  <div><img src="../img/b9c81b2e-6ae0-48b7-9130-33b5fc4f53c.png" alt=""><span id="navVideo"></span></div>
+  <div><img src="../img/b9c81b2e-6ae0-48b7-9130.png" alt=""><span id="navSchool"></span></div>
+</nav>
+
+<!-- SCRIPTS -->
+
+<!-- SCRIPTS -->
+<script src="../js/home.js"></script>
+<script src="../js/home-ui.js"></script>
+<script src="../lang/home-lang.js"></script>
+
+</body>
+</html>

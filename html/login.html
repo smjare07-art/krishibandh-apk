@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Design CSS -->
+  <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+
+    <div class="logo-circle">
+      <img src="../img/Logo.png" alt="Krishibandh">
+    </div>
+
+    <!-- h2 same, only id add -->
+    <h2 id="titleText">Login</h2>
+
+    <!-- inputs SAME -->
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <!-- button SAME -->
+    <button onclick="login()">
+      <span id="loginBtn">Login</span>
+    </button>
+
+    <!-- links SAME -->
+    <p class="links">
+      <a href="signup.html" id="signupText">Signup</a> |
+      <a href="forgot.html" id="forgotText">Forgot Password</a>
+    </p>
+
+  </div>
+</div>
+<!-- POPUP -->
+<div id="popup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+  <div style="background:white; padding:20px; border-radius:10px; text-align:center;">
+    <p id="popupText"></p>
+    <button onclick="closePopup()">OK</button>
+  </div>
+</div>
+
+<div id="popup" class="popup">
+  <div class="popup-box">
+    <p id="popupText"></p>
+    <button onclick="closePopup()">OK</button>
+  </div>
+</div>
+
+<!-- Language change only -->
+<script src="../lang/login.js"></script>
+<script src="../js/login.js"></script>
+<!-- ❗ auth.js unchanged -->
+
+
+</body>
+</html>

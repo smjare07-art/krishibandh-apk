@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <title>Company Requirements</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/company.css">
+</head>
+<body>
+
+<!-- HEADER (Home page style) -->
+<header class="topbar">
+  <h2>Company Requirements</h2>
+</header>
+
+<!-- PAGE INTRO -->
+<div class="page-head">
+  <h3>आजच्या Live मागण्या</h3>
+  <p>Company कडून आलेल्या गरजा</p>
+</div>
+
+<!-- COMPANY POSTS -->
+<div id="companyPosts" class="post-list">
+  <div class="loading">Loading company posts...</div>
+</div>
+
+<!-- FULL POST MODAL -->
+<div id="postModal" class="modal">
+  <div class="modal-box">
+
+    <h3>Company Requirement Detail</h3>
+    <div id="postDetailView" class="post-detail"></div>
+
+    <hr>
+
+    <h4>Farmer Apply Form</h4>
+
+    <input id="applyQty" placeholder="आपण देऊ शकणारी Quantity">
+    <input id="applyPrice" placeholder="अपेक्षित दर">
+    <textarea id="applyMsg" placeholder="Company साठी संदेश"></textarea>
+
+    <div class="modal-actions">
+      <button class="btn primary" onclick="submitApplication()">Submit</button>
+      <button class="btn outline" onclick="closeModal()">Close</button>
+    </div>
+
+  </div>
+</div>
+
+<script type="module" src="../js/auth.js"></script>
+</body>
+</html>

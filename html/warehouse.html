@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <title>My Warehouse</title>
+</head>
+<body>
+
+<h2 id="titleText">🏬 My Warehouse</h2>
+
+<h3 id="addTitleText">Add Crop to Warehouse</h3>
+
+<input id="cropName" placeholder="Crop Name"><br><br>
+<input id="quantity" placeholder="Quantity (Quintal)"><br><br>
+
+<select id="storageType">
+  <option id="coldOpt" value="Cold Storage">Cold Storage</option>
+  <option id="dryOpt" value="Dry Storage">Dry Storage</option>
+</select><br><br>
+
+<button id="addBtn" onclick="addWarehouseItem()">➕ Add</button>
+
+<hr>
+
+<h3 id="storedTitleText">📦 Stored Items</h3>
+<div id="warehouseList">Loading...</div>
+
+<script src="../lang/warehouse-lang.js"></script>
+<script type="module" src="../js/warehouse.js"></script>
+
+
+
+<script type="module" src="../js/warehouse.js"></script>
+</body>
+</html>

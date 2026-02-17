@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <title>बाजारभाव</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css/market.css" />
+</head>
+<body>
+
+<div class="topbar">
+  <span onclick="history.back()">⬅</span>
+  <h2>बाजारभाव</h2>
+</div>
+
+<!-- FILTERS -->
+<div class="filter">
+  <input id="cropInput" placeholder="🌾 Crop नाव टाका" />
+  <input id="marketInput" placeholder="📍 Market / District" />
+
+  <select id="stateSelect">
+    <option value="Maharashtra">Maharashtra</option>
+    <option value="Karnataka">Karnataka</option>
+    <option value="Gujarat">Gujarat</option>
+  </select>
+
+  <button onclick="loadMarket()">Search</button>
+</div>
+
+<!-- FAVORITES -->
+<h3 style="padding-left:10px">⭐ Favorite Mandis</h3>
+<div id="favList" class="list"></div>
+
+<!-- MARKET DATA -->
+<h3 style="padding-left:10px">📊 Live Market Rates</h3>
+<div id="mandiRates" class="list">⏳ Loading...</div>
+
+<!-- GRAPH -->
+<canvas id="priceChart" style="margin:20px"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../js/market.js"></script>
+
+
+</body>
+</html>

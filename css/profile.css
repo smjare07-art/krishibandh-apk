@@ -1,0 +1,45 @@
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#f5f7f7;
+}
+
+.topbar{
+  background:#1f7a3f;
+  color:#fff;
+  padding:15px;
+  display:flex;
+  gap:15px;
+  align-items:center;
+}
+
+.profile-card{
+  background:#fff;
+  margin:20px;
+  padding:20px;
+  border-radius:15px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.avatar{
+  font-size:50px;
+  text-align:center;
+  margin-bottom:15px;
+}
+
+.profile-card p{
+  font-size:15px;
+  margin:10px 0;
+}
+
+.logout-btn{
+  width:90%;
+  margin:20px auto;
+  display:block;
+  padding:12px;
+  background:#1f7a3f;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+}

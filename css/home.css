@@ -1,0 +1,322 @@
+/* ================= GLOBAL ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  background: #f4f6f5;
+  padding-bottom: 70px;
+}
+
+/* ================= TOP BAR ================= */
+.topbar {
+  background: #2e7d32;
+  color: #fff;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.topbar h1 {
+  font-size: 18px;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  position: fixed;
+  top: 56px;
+  left: -260px;
+  width: 260px;
+  height: calc(100vh - 56px);
+  background: #ffffff;
+  z-index: 1001;
+  transition: left 0.3s ease;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.overlay {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 56px);
+  background: rgba(0,0,0,0.4);
+  display: none;
+  z-index: 1000;
+}
+
+.profile {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #e8f5e9;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 2px solid #2e7d32;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sidebar .menu {
+  list-style: none;
+  padding: 10px 0;
+}
+
+.sidebar .menu li {
+  padding: 14px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  position: relative;
+}
+
+.sidebar .menu li:hover {
+  background: #f1f8f4;
+}
+
+.sidebar .menu li.active {
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.sidebar .menu li.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: #2e7d32;
+}
+
+.sidebar .logout {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+/* ================= GREETING ================= */
+.greet-box {
+  padding: 16px;
+}
+
+.greet-box h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.greet-box p {
+  font-size: 13px;
+  color: #555;
+}
+
+/* ================= WEATHER ================= */
+.weather-card {
+  margin: 0 16px;
+  padding: 18px;
+  background: linear-gradient(135deg,#2e7d32,#4fc3f7);
+  border-radius: 20px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.weather-card h2 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.weather-card p {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.cloud img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+/* ================= GRID ================= */
+.grid {
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  min-height: calc(100vh - 230px);
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 110px;
+  padding: 18px 10px;
+  position: relative;
+}
+
+.card .icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 8px;
+}
+
+.card .icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.card p {
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.badge {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: red;
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 12px;
+}
+
+/* ================= RIPPLE ================= */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 600ms linear;
+  background-color: rgba(46, 125, 50, 0.3);
+  pointer-events: none;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.card,
+.sidebar .menu li,
+.bottom-nav div {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ================= BOT ================= */
+.bot {
+  position: fixed;
+  bottom: 90px;
+  right: 16px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #2e7d32;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+  z-index: 1002;
+  animation: pulse 2.5s infinite;
+}
+
+.bot img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.bot:active {
+  transform: scale(0.95);
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(46,125,50,0.6); }
+  70% { box-shadow: 0 0 0 12px rgba(46,125,50,0); }
+  100% { box-shadow: 0 0 0 0 rgba(46,125,50,0); }
+}
+
+/* ================= BOTTOM NAV ================= */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 60px;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.12);
+  z-index: 1000;
+}
+
+.bottom-nav > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #333;
+  cursor: pointer;
+  min-width: 60px;
+}
+
+.bottom-nav img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  margin-bottom: 3px;
+}
+
+.bottom-nav span {
+  font-size: 11px;
+  line-height: 1;
+}
+
+.bottom-nav .active span {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.bottom-nav .active img {
+  filter: brightness(0) saturate(100%) invert(32%) sepia(62%) saturate(448%) hue-rotate(86deg);
+}
+
+.bottom-nav > div:active {
+  transform: scale(0.95);
+}

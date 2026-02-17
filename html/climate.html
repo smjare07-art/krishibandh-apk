@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<title>हवामानानुकूल शेती</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../css/climate.css">
+</head>
+
+<body>
+
+<div class="top-weather">
+  <div class="location">📍 <span id="city">--</span></div>
+  <div class="temp">
+    <div id="icon"></div>
+    <span id="temp">--°C</span>
+  </div>
+  <p id="desc">Loading...</p>
+</div>
+
+<div class="section">
+  <h3>🌾 पीक निवडा</h3>
+  <div class="chips">
+    <button onclick="showCropAdvice('cotton')">कापूस</button>
+    <button onclick="showCropAdvice('soybean')">सोयाबीन</button>
+    <button onclick="showCropAdvice('wheat')">गहू</button>
+    <button onclick="showCropAdvice('rice')">भात</button>
+    <button onclick="showCropAdvice('onion')">कांदा</button>
+  </div>
+</div>
+
+<div class="section">
+  <h3>🌱 पीक सल्ला</h3>
+  <ul id="advice"></ul>
+</div>
+
+<div class="section">
+  <h3>📆 7 दिवसांचा अंदाज</h3>
+  <div id="forecast"></div>
+</div>
+
+<div class="section">
+  <h3>🌧 पावसाचा ग्राफ</h3>
+  <canvas id="rainChart"></canvas>
+</div>
+
+<!-- ✅ Correct CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../js/climate.js"></script>
+
+</body>
+</html>

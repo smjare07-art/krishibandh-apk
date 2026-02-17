@@ -1,0 +1,117 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* -------- SPLASH -------- */
+body{
+  height:100vh;
+}
+
+#splash{
+  height:100vh;
+  background:#7ED957;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+.logo-circle{
+  width:140px;
+  height:140px;
+  background:#fff;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.logo-circle img{
+  width:80px;
+}
+
+#splash h1{
+  color:white;
+  margin:20px 0;
+  font-size:28px;
+}
+
+.loader{
+  width:40px;
+  height:40px;
+  border:4px solid rgba(255,255,255,0.4);
+  border-top:4px solid white;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  100%{transform:rotate(360deg);}
+}
+
+/* -------- LANGUAGE PAGE -------- */
+#language{
+  display:none;
+  min-height:100vh;
+  background:#f2f2f2;
+}
+
+.header{
+  background:#7ED957;
+  color:white;
+  text-align:center;
+  padding:15px;
+  font-size:22px;
+  font-weight:bold;
+}
+
+.card{
+  background:white;
+  width:90%;
+  max-width:400px;
+  margin:40px auto;
+  padding:30px 20px;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.1);
+  text-align:center;
+}
+
+.border{
+  border:4px solid #7ED957;
+  margin:auto;
+}
+
+.card h2{
+  margin:20px 0 25px;
+}
+
+.lang-btn{
+  background:#e6e6e6;
+  padding:15px;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  margin-bottom:15px;
+  cursor:pointer;
+}
+
+.icon{
+  width:45px;
+  height:45px;
+  background:#cfcfcf;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:18px;
+  font-weight:bold;
+  margin-right:15px;
+}
+
+.lang-btn span{
+  font-size:18px;
+  font-weight:600;
+}
