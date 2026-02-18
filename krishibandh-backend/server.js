@@ -6,25 +6,17 @@ import bcrypt from "bcrypt";
 import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
-import fs from "fs"; 
+import fs from "fs";
 import nodemailer from "nodemailer";
 import Razorpay from "razorpay";
 
+dotenv.config(); // 🔥 MUST BE HERE
+
 const razorpay = new Razorpay({
-  key_id: "rzp_test_SGtadFAcSDWJxt",
-  key_secret: "yC3b71hPXckvd6VipOQ9VYd4"
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
-
-dotenv.config();
 
 const app = express();
 
@@ -438,6 +430,9 @@ app.get("/application/:id", async (req, res) => {
 });
 
 // ===== START SERVER =====
-app.listen(5000, () => {
-  console.log("Server running at http://localhost:5000");
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log("Server running on port " + PORT);
 });
+
