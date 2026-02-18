@@ -14,6 +14,8 @@
     </button>
 
 <script>
+const BASE_URL = "https://krishibandh-backend.onrender.com";
+
 const params = new URLSearchParams(window.location.search);
 const appId = params.get("appId");
 
@@ -21,7 +23,12 @@ let finalAmount = 0;
 
 async function loadDeal() {
 
-    const res = await fetch("http://localhost:5000/application/" + appId);
+    if (!appId) {
+        alert("Invalid Application ID");
+        return;
+    }
+
+    const res = await fetch(`${BASE_URL}/application/${appId}`);
     const data = await res.json();
 
     finalAmount = data.finalPrice;
@@ -35,7 +42,12 @@ loadDeal();
 
 document.getElementById("pay-btn").onclick = async function () {
 
-    const response = await fetch("http://localhost:5000/create-order", {
+    if (!finalAmount) {
+        alert("Amount not loaded yet");
+        return;
+    }
+
+    const response = await fetch(`${BASE_URL}/create-order`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -48,7 +60,7 @@ document.getElementById("pay-btn").onclick = async function () {
     const order = await response.json();
 
     var options = {
-        key: "rzp_test_SGtadFAcSDWJxt",
+        key: "rzp_test_SGtadFAcSDWJxt",  // ⚠ LIVE karaycha asel tar live key tak
         amount: finalAmount * 100,
         currency: "INR",
         name: "Krishibandh Deal",
@@ -57,20 +69,18 @@ document.getElementById("pay-btn").onclick = async function () {
 
         handler: async function (response) {
 
-            await fetch("http://localhost:5000/payment/success/" + appId, {
+            await fetch(`${BASE_URL}/payment/success/${appId}`, {
                 method: "PUT"
             });
 
             alert("Payment Successful!");
-            window.location.href = "deal-history.html";
+            window.location.href = "../html/dealhistory.html";
         }
     };
 
     var rzp = new Razorpay(options);
     rzp.open();
 };
-
-
 </script>
 
 </body>

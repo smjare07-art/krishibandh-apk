@@ -1,3 +1,5 @@
+const BASE_URL = "https://krishibandh-backend.onrender.com";
+
 // ================= GET COMPANY ID =================
 const companyId = localStorage.getItem("userId");
 
@@ -6,7 +8,6 @@ if (!companyId) {
   window.location.href = "company-login.html";
 }
 
-// Debug
 console.log("Company ID:", companyId);
 
 
@@ -33,7 +34,7 @@ async function createPost() {
     formData.append("image", image);
   }
 
-  const res = await fetch("http://localhost:5000/company/post", {
+  const res = await fetch(`${BASE_URL}/company/post`, {
     method: "POST",
     body: formData
   });
@@ -56,7 +57,7 @@ async function loadPosts() {
   try {
 
     const res = await fetch(
-      "http://localhost:5000/company/posts/" + companyId
+      `${BASE_URL}/company/posts/${companyId}`
     );
 
     if (!res.ok) {
@@ -81,7 +82,7 @@ async function loadPosts() {
           🌾 ${p.crop}<br>
           📦 Quantity: ${p.quantity}<br>
           💰 Price: ₹${p.price}<br>
-          ${p.image ? `<img src="http://localhost:5000/${p.image}" width="150">` : ""}
+          ${p.image ? `<img src="${BASE_URL}/${p.image}" width="150">` : ""}
         </div>
       `;
     });
@@ -92,7 +93,6 @@ async function loadPosts() {
 }
 
 
-// ================= LOAD APPLICATIONS =================
 // ================= LOAD APPLICATIONS =================
 async function loadApplications() {
 
@@ -106,7 +106,7 @@ async function loadApplications() {
   try {
 
     const res = await fetch(
-      "http://localhost:5000/company/applications/" + companyId
+      `${BASE_URL}/company/applications/${companyId}`
     );
 
     if (!res.ok) {
@@ -125,7 +125,6 @@ async function loadApplications() {
 
     applications.forEach(a => {
 
-      // Status color logic
       let color = "black";
       if (a.status === "accepted") color = "green";
       if (a.status === "rejected") color = "red";
@@ -138,7 +137,7 @@ async function loadApplications() {
           💰 Price: ₹${a.price || "-"}<br>
           💬 Message: ${a.message || "-"}<br>
           Status: <b style="color:${color}">${a.status || "pending"}</b><br><br>
-          ${a.image ? `<img src="http://localhost:5000/${a.image}" width="150"><br><br>` : ""}
+          ${a.image ? `<img src="${BASE_URL}/${a.image}" width="150"><br><br>` : ""}
 
           <button onclick="updateStatus('${a._id}','accepted')" 
             style="background:green;color:white;margin-right:5px">
@@ -162,33 +161,17 @@ async function loadApplications() {
     console.log("Applications Error:", err);
   }
 }
+
+
 // ================= UPDATE APPLICATION STATUS =================
-async function updateStatus(id, status) {
-
-  const res = await fetch("http://localhost:5000/application/status/" + id, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ status })
-  });
-
-  const data = await res.json();
-
-  if (status === "accepted") {
-    window.location.href = "payment.html?appId=" + id;
-  } else {
-    alert("Status Updated");
-    loadApplications();
-  }
-}
 async function updateStatus(id, status) {
 
   if (status === "accepted") {
 
     const finalPrice = prompt("Enter Final Agreed Price:");
-
     if (!finalPrice) return;
 
-    await fetch("http://localhost:5000/application/status/" + id, {
+    await fetch(`${BASE_URL}/application/status/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ 
@@ -201,7 +184,7 @@ async function updateStatus(id, status) {
 
   } else {
 
-    await fetch("http://localhost:5000/application/status/" + id, {
+    await fetch(`${BASE_URL}/application/status/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status })

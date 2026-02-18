@@ -1,3 +1,6 @@
+// ================= BASE URL =================
+const BASE_URL = "https://krishibandh-backend.onrender.com";
+
 // ================= SIDEBAR =================
 window.openSidebar = function () {
   var sidebar = document.getElementById("sidebar");
@@ -26,10 +29,8 @@ window.logout = function () {
   window.location.href = "index.html";
 };
 
-// ================= LOAD USER FROM MONGODB =================
+// ================= LOAD USER =================
 document.addEventListener("DOMContentLoaded", async function () {
-
-  console.log("HOME JS LOADED");
 
   var userId = localStorage.getItem("userId");
 
@@ -40,22 +41,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   try {
 
-    var res = await fetch("http://localhost:5000/user/" + userId);
-
-    if (!res.ok) {
-      console.log("User fetch failed");
-      return;
-    }
+    var res = await fetch(BASE_URL + "/user/" + userId);
+    if (!res.ok) return;
 
     var user = await res.json();
-    console.log("User Loaded:", user);
-
-    // ===== ROLE CHECK (INSIDE ONLY) =====
-    if (user.role === "company") {
-      console.log("Company user logged in");
-    } else {
-      console.log("Farmer user logged in");
-    }
 
     var homeName = document.getElementById("homeUserName");
     var sbName = document.getElementById("usernameSb");
@@ -76,15 +65,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     var greetEl = document.getElementById("greeting");
     if (greetEl) greetEl.innerText = greet;
 
-    // ================= APPLY LANGUAGE =================
+    // ================= LANGUAGE APPLY =================
     if (typeof applyHomeLanguage === "function") {
       applyHomeLanguage(user.username);
     }
 
-    // ================= LOAD WEATHER =================
     loadWeather();
-
-    // ================= LOAD POST COUNT =================
     loadPostCount();
 
   } catch (err) {
@@ -96,22 +82,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 // ================= LOAD POST COUNT =================
 async function loadPostCount() {
   try {
-    const res = await fetch("http://localhost:5000/posts/count");
+    const res = await fetch(BASE_URL + "/posts/count");
     if (!res.ok) return;
 
     const data = await res.json();
 
     const badge = document.getElementById("companyCount");
-    if (badge) {
-      badge.innerText = data.count;
-    }
+    if (badge) badge.innerText = data.count;
 
   } catch (err) {
     console.log("Count Error:", err);
   }
 }
 
-// ================= WEATHER LOAD =================
+// ================= WEATHER =================
 function loadWeather() {
 
   if (!navigator.geolocation) return;

@@ -1,10 +1,12 @@
 let selectedPostId = null;
 let selectedCompanyId = null;
 
+const BASE_URL = "https://krishibandh-backend.onrender.com";
+
 // ================= LOAD ALL POSTS =================
 async function loadAllPosts() {
   try {
-    const res = await fetch("http://localhost:5000/posts");
+    const res = await fetch(`${BASE_URL}/posts`);
     const posts = await res.json();
 
     const container = document.getElementById("companyPosts");
@@ -22,7 +24,7 @@ async function loadAllPosts() {
           <p>📦 Quantity: ${p.quantity}</p>
           <p>💰 Price: ₹${p.price}</p>
           <p>🏢 Company: ${p.companyName}</p>
-          ${p.image ? `<img src="http://localhost:5000/${p.image}" width="120">` : ""}
+          ${p.image ? `<img src="${BASE_URL}/${p.image}" width="120">` : ""}
         </div>
       `;
     });
@@ -41,7 +43,7 @@ function viewPost(id, companyId) {
   selectedPostId = id;
   selectedCompanyId = companyId;
 
-  fetch("http://localhost:5000/posts")
+  fetch(`${BASE_URL}/posts`)
     .then(res => res.json())
     .then(posts => {
 
@@ -55,7 +57,7 @@ function viewPost(id, companyId) {
         <p>📦 Quantity: ${post.quantity}</p>
         <p>💰 Price: ₹${post.price}</p>
         <p>🏢 Company: ${post.companyName}</p>
-        ${post.image ? `<img src="http://localhost:5000/${post.image}" width="200">` : ""}
+        ${post.image ? `<img src="${BASE_URL}/${post.image}" width="200">` : ""}
       `;
 
       document.getElementById("postModal").style.display = "flex";
@@ -85,7 +87,7 @@ async function submitApplication() {
     formData.append("image", image);
   }
 
-  await fetch("http://localhost:5000/apply", {
+  await fetch(`${BASE_URL}/apply`, {
     method: "POST",
     body: formData
   });
