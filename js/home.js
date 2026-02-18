@@ -26,15 +26,12 @@ window.logout = function () {
   window.location.href = "index.html";
 };
 
-
 // ================= LOAD USER FROM MONGODB =================
 document.addEventListener("DOMContentLoaded", async function () {
 
   console.log("HOME JS LOADED");
 
   var userId = localStorage.getItem("userId");
-
-  console.log("Stored userId:", userId);
 
   if (!userId) {
     window.location.href = "index.html";
@@ -51,9 +48,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     var user = await res.json();
-loadWeather();
-
     console.log("User Loaded:", user);
+
+    // ===== ROLE CHECK (INSIDE ONLY) =====
+    if (user.role === "company") {
+      console.log("Company user logged in");
+    } else {
+      console.log("Farmer user logged in");
+    }
 
     var homeName = document.getElementById("homeUserName");
     var sbName = document.getElementById("usernameSb");
@@ -79,11 +81,36 @@ loadWeather();
       applyHomeLanguage(user.username);
     }
 
+    // ================= LOAD WEATHER =================
+    loadWeather();
+
+    // ================= LOAD POST COUNT =================
+    loadPostCount();
+
   } catch (err) {
     console.log("Error loading user:", err);
   }
 
 });
+
+// ================= LOAD POST COUNT =================
+async function loadPostCount() {
+  try {
+    const res = await fetch("http://localhost:5000/posts/count");
+    if (!res.ok) return;
+
+    const data = await res.json();
+
+    const badge = document.getElementById("companyCount");
+    if (badge) {
+      badge.innerText = data.count;
+    }
+
+  } catch (err) {
+    console.log("Count Error:", err);
+  }
+}
+
 // ================= WEATHER LOAD =================
 function loadWeather() {
 
@@ -112,7 +139,6 @@ function loadWeather() {
       if (iconEl && data.weather && data.weather.length > 0) {
 
         const condition = data.weather[0].main.toLowerCase();
-
         let icon = "☁️";
 
         if (condition.includes("clear")) icon = "☀️";

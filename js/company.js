@@ -2,36 +2,12 @@
 const companyId = localStorage.getItem("userId");
 
 if (!companyId) {
+  alert("Please login first");
   window.location.href = "company-login.html";
 }
 
-
-// ================= LOAD MANDI RATES =================
-async function loadMandi() {
-
-  try {
-
-    const res = await fetch(
-      "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001343c9c4cc0464bb66221e639d0cc6174&format=json&limit=10"
-    );
-
-    const data = await res.json();
-
-    const container = document.getElementById("mandiRates");
-    container.innerHTML = "";
-
-    data.records.forEach(r => {
-      container.innerHTML += `
-        <div style="border:1px solid #ccc;padding:10px;margin:5px">
-          🌾 ${r.commodity} - ₹${r.max_price}
-        </div>
-      `;
-    });
-
-  } catch (err) {
-    console.log(err);
-  }
-}
+// Debug
+console.log("Company ID:", companyId);
 
 
 // ================= CREATE POST =================
@@ -40,22 +16,34 @@ async function createPost() {
   const crop = document.getElementById("crop").value;
   const quantity = document.getElementById("quantity").value;
   const price = document.getElementById("price").value;
+  const image = document.getElementById("image").files[0];
 
   if (!crop || !quantity || !price) {
     alert("All fields required");
     return;
   }
 
-  await fetch("http://localhost:5000/company/post", {
+  const formData = new FormData();
+  formData.append("companyId", companyId);
+  formData.append("crop", crop);
+  formData.append("quantity", quantity);
+  formData.append("price", price);
+
+  if (image) {
+    formData.append("image", image);
+  }
+
+  const res = await fetch("http://localhost:5000/company/post", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      companyId,
-      crop,
-      quantity,
-      price
-    })
+    body: formData
   });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    alert(data.message);
+    return;
+  }
 
   alert("Post Created");
   loadPosts();
@@ -71,10 +59,20 @@ async function loadPosts() {
       "http://localhost:5000/company/posts/" + companyId
     );
 
+    if (!res.ok) {
+      console.log("Route error:", res.status);
+      return;
+    }
+
     const posts = await res.json();
 
     const container = document.getElementById("postList");
     container.innerHTML = "";
+
+    if (posts.length === 0) {
+      container.innerHTML = "<p>No posts found</p>";
+      return;
+    }
 
     posts.forEach(p => {
 
@@ -82,17 +80,138 @@ async function loadPosts() {
         <div style="border:1px solid #333;padding:10px;margin:10px">
           🌾 ${p.crop}<br>
           📦 Quantity: ${p.quantity}<br>
-          💰 Price: ₹${p.price}
+          💰 Price: ₹${p.price}<br>
+          ${p.image ? `<img src="http://localhost:5000/${p.image}" width="150">` : ""}
         </div>
       `;
     });
 
   } catch (err) {
-    console.log(err);
+    console.log("Load Posts Error:", err);
+  }
+}
+
+
+// ================= LOAD APPLICATIONS =================
+// ================= LOAD APPLICATIONS =================
+async function loadApplications() {
+
+  const container = document.getElementById("applicationList");
+
+  if (!container) {
+    console.log("applicationList div not found in HTML");
+    return;
+  }
+
+  try {
+
+    const res = await fetch(
+      "http://localhost:5000/company/applications/" + companyId
+    );
+
+    if (!res.ok) {
+      console.log("Applications route error:", res.status);
+      return;
+    }
+
+    const applications = await res.json();
+
+    container.innerHTML = "";
+
+    if (applications.length === 0) {
+      container.innerHTML = "<p>No applications yet</p>";
+      return;
+    }
+
+    applications.forEach(a => {
+
+      // Status color logic
+      let color = "black";
+      if (a.status === "accepted") color = "green";
+      if (a.status === "rejected") color = "red";
+      if (a.status === "bargaining") color = "orange";
+
+      container.innerHTML += `
+        <div style="border:1px solid #333;padding:10px;margin:10px">
+          👨‍🌾 Farmer ID: ${a.farmerId}<br>
+          📦 Quantity: ${a.quantity || "-"}<br>
+          💰 Price: ₹${a.price || "-"}<br>
+          💬 Message: ${a.message || "-"}<br>
+          Status: <b style="color:${color}">${a.status || "pending"}</b><br><br>
+          ${a.image ? `<img src="http://localhost:5000/${a.image}" width="150"><br><br>` : ""}
+
+          <button onclick="updateStatus('${a._id}','accepted')" 
+            style="background:green;color:white;margin-right:5px">
+            Accept
+          </button>
+
+          <button onclick="updateStatus('${a._id}','rejected')" 
+            style="background:red;color:white;margin-right:5px">
+            Reject
+          </button>
+
+          <button onclick="updateStatus('${a._id}','bargaining')" 
+            style="background:orange;color:white">
+            Bargain
+          </button>
+        </div>
+      `;
+    });
+
+  } catch (err) {
+    console.log("Applications Error:", err);
+  }
+}
+// ================= UPDATE APPLICATION STATUS =================
+async function updateStatus(id, status) {
+
+  const res = await fetch("http://localhost:5000/application/status/" + id, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status })
+  });
+
+  const data = await res.json();
+
+  if (status === "accepted") {
+    window.location.href = "payment.html?appId=" + id;
+  } else {
+    alert("Status Updated");
+    loadApplications();
+  }
+}
+async function updateStatus(id, status) {
+
+  if (status === "accepted") {
+
+    const finalPrice = prompt("Enter Final Agreed Price:");
+
+    if (!finalPrice) return;
+
+    await fetch("http://localhost:5000/application/status/" + id, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        status,
+        finalPrice
+      })
+    });
+
+    window.location.href = "payment.html?appId=" + id;
+
+  } else {
+
+    await fetch("http://localhost:5000/application/status/" + id, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status })
+    });
+
+    loadApplications();
   }
 }
 
 
 // ================= INIT =================
-loadMandi();
 loadPosts();
+loadApplications();

@@ -6,7 +6,7 @@ async function signup() {
   const phone = document.getElementById("phone").value;
   const password = document.getElementById("password").value;
 
-  const res = await fetch("http://localhost:5000/company/signup", {
+  const res = await fetch("http://127.0.0.1:5000/company/signup", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, email, phone, password })
@@ -27,7 +27,7 @@ async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  const res = await fetch("http://localhost:5000/login", {
+  const res = await fetch("http://127.0.0.1:5000/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password })
@@ -35,14 +35,16 @@ async function login() {
 
   const data = await res.json();
 
-  if (res.ok && data.role === "company") {
+  console.log("LOGIN RESPONSE:", data);
 
-    localStorage.setItem("userId", data.userId);
-    localStorage.setItem("username", data.username);
+  if (res.ok) {
 
-    window.location.href = "company-dashboard.html";
+  localStorage.setItem("userId", data.userId);
+  localStorage.setItem("username", data.username);
 
-  } else {
-    alert("Not a company account");
-  }
+  window.location.href = "company-dashboard.html";
+
+} else {
+  alert(data.message || "Login Failed");
+}
 }

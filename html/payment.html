@@ -1,47 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Razorpay Payment</title>
+    <title>Deal Payment</title>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body style="text-align:center; margin-top:100px; font-family:Arial;">
 
-    <h1>My App Payment</h1>
+    <h1>Deal Payment</h1>
+    <h2 id="dealAmount">Loading...</h2>
+
     <button id="pay-btn" style="padding:10px 20px; font-size:18px;">
-        Pay ₹500
+        Pay Now
     </button>
 
-    <script>
-        document.getElementById("pay-btn").onclick = async function () {
+<script>
+const params = new URLSearchParams(window.location.search);
+const appId = params.get("appId");
 
-            const response = await fetch("http://localhost:5001/create-order", {
-                method: "POST"
+let finalAmount = 0;
+
+async function loadDeal() {
+
+    const res = await fetch("http://localhost:5000/application/" + appId);
+    const data = await res.json();
+
+    finalAmount = data.finalPrice;
+
+    document.getElementById("dealAmount").innerText =
+        "Final Amount: ₹" + finalAmount;
+}
+
+loadDeal();
+
+
+document.getElementById("pay-btn").onclick = async function () {
+
+    const response = await fetch("http://localhost:5000/create-order", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            amount: finalAmount
+        })
+    });
+
+    const order = await response.json();
+
+    var options = {
+        key: "rzp_test_SGtadFAcSDWJxt",
+        amount: finalAmount * 100,
+        currency: "INR",
+        name: "Krishibandh Deal",
+        description: "Final Deal Payment",
+        order_id: order.id,
+
+        handler: async function (response) {
+
+            await fetch("http://localhost:5000/payment/success/" + appId, {
+                method: "PUT"
             });
 
-            const order = await response.json();
+            alert("Payment Successful!");
+            window.location.href = "deal-history.html";
+        }
+    };
 
-            var options = {
-                key: "rzp_test_SGtadFAcSDWJxt", 
-                amount: order.amount,
-                currency: "INR",
-                name: "My App",
-                description: "Test Payment",
-                order_id: order.id,
+    var rzp = new Razorpay(options);
+    rzp.open();
+};
 
-                handler: function (response) {
-                    alert("Payment Successful!");
-                    console.log(response);
-                },
 
-                theme: {
-                    color: "#3399cc"
-                }
-            };
-
-            var rzp = new Razorpay(options);
-            rzp.open();
-        };
-    </script>
+</script>
 
 </body>
 </html>

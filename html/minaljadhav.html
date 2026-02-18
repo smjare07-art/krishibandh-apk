@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krishibandh</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:#f4f7f5;
+  scroll-behavior:smooth;
+}
+
+/* HERO SECTION WITH ANIMATED TEXT AND FLOATING LEAVES */
+.hero{
+  position:relative;
+  height:80vh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  background:linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.6)), url('farm-field.jpg') center/cover no-repeat fixed;
+}
+
+.leaf{
+  position:absolute;
+  width:40px;
+  height:40px;
+  background: url('leaf.png') no-repeat center/contain;
+  animation:float 10s linear infinite;
+  opacity:0.6;
+}
+@keyframes float{
+  0%{transform:translateY(0) rotate(0deg);}
+  50%{transform:translateY(-80px) rotate(180deg);}
+  100%{transform:translateY(0) rotate(360deg);}
+}
+
+/* Animated Gradient Hero Text */
+.hero-text{
+  font-size:55px;
+  font-weight:900;
+  background:linear-gradient(90deg,#1b7f4c,#145c36,#00b894);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  margin-bottom:15px;
+  animation:slideUp 1s ease forwards;
+}
+
+@keyframes slideUp{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+.subtitle{
+  font-size:24px;
+  color:white;
+  text-shadow:0 0 10px rgba(0,0,0,0.5);
+  font-weight:600;
+  margin-bottom:25px;
+  animation:fadeIn 2s forwards;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+
+/* Gradient Pulse Button */
+.btn{
+  padding:12px 35px;
+  background:linear-gradient(45deg,#1b7f4c,#00b894);
+  border-radius:30px;
+  font-weight:600;
+  color:white;
+  cursor:pointer;
+  border:none;
+  box-shadow:0 0 25px rgba(27,127,76,0.5);
+  transition:0.4s;
+  animation:fadeIn 2s forwards 0.5s;
+}
+
+.btn:hover{
+  animation:pulse 1s infinite;
+  box-shadow:0 0 40px rgba(27,127,76,0.8);
+}
+
+@keyframes pulse{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.05);}
+}
+
+/* POINTS SECTION */
+.points-section{
+  padding:80px 20px;
+  max-width:1200px;
+  margin:auto;
+}
+
+.points-section h2{
+  font-size:38px;
+  color:#1b7f4c;
+  margin-bottom:50px;
+  text-align:center;
+}
+
+/* Points Grid */
+.points-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:30px;
+}
+
+.point{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  text-align:left;
+  position:relative;
+  overflow:hidden;
+  transition:0.5s;
+}
+
+.point:hover{
+  transform:scale(1.05);
+  box-shadow:0 15px 35px rgba(27,127,76,0.3);
+  background:linear-gradient(135deg,#e0f8ef,#d0f0e8);
+}
+
+.point h3{
+  color:#1b7f4c;
+  font-size:18px;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.point i{
+  color:#1b7f4c;
+  animation:iconBounce 2s infinite;
+}
+
+@keyframes iconBounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-5px);}
+}
+
+.point p{
+  color:#555;
+  font-size:15px;
+  line-height:1.6;
+}
+
+/* VIDEO SECTION WITH HOVER SCALE */
+.video-section{
+  padding:70px 20px;
+  background:#ffffff;
+  text-align:center;
+}
+
+.video-section h2{
+  color:#1b7f4c;
+  margin-bottom:20px;
+  font-size:32px;
+}
+
+.video-container{
+  max-width:800px;
+  margin:auto;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
+  cursor:pointer;
+  transition:0.4s;
+}
+
+.video-container:hover{
+  transform:scale(1.03);
+}
+
+/* HOW IT WORKS */
+.section{
+  padding:80px 20px;
+  background:#eaf5ef;
+}
+
+.section h2{
+  font-size:32px;
+  margin-bottom:50px;
+  color:#1b7f4c;
+  text-align:center;
+}
+
+.cards{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  flex-wrap:wrap;
+}
+
+.card{
+  background:white;
+  width:280px;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  transition:0.4s;
+  text-align:center;
+}
+
+.card:hover{
+  transform:scale(1.05);
+  box-shadow:0 15px 35px rgba(0,0,0,0.15);
+}
+
+/* FOOTER */
+.footer{
+  background:#111;
+  color:white;
+  padding:25px;
+  text-align:center;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero-text{font-size:36px;}
+  .subtitle{font-size:18px;}
+  .points-grid{grid-template-columns:1fr;}
+  .card{width:90%;}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <!-- Floating leaves -->
+  <div class="leaf" style="top:30%; left:10%; animation-delay:0s;"></div>
+  <div class="leaf" style="top:50%; left:80%; animation-delay:2s;"></div>
+  <div class="leaf" style="top:70%; left:30%; animation-delay:4s;"></div>
+
+  <div class="hero-text">Krishibandh</div>
+  <div class="subtitle">Digital Bridge Between Farmers & Companies</div>
+  <button class="btn" onclick="document.getElementById('points').scrollIntoView({behavior:'smooth'})">Get Started</button>
+</div>
+
+<!-- POINTS -->
+<div class="points-section" id="points">
+<h2>Key Features</h2>
+<div class="points-grid">
+
+<div class="point">
+<h3><i class="fa-solid fa-people-roof"></i> Direct Connection Between Farmers and Companies</h3>
+<p>Farmers can connect directly with companies, without middlemen.</p>
+</div>
+
+<div class="point">
+<h3><i class="fa-solid fa-scale-balanced"></i> Fair and Transparent Pricing</h3>
+<p>Farmers get clear and fair prices for their crops.</p>
+</div>
+
+<div class="point">
+<h3><i class="fa-solid fa-credit-card"></i> Safe and Quick Digital Payments</h3>
+<p>Payments are secure and fast via UPI or Net Banking.</p>
+</div>
+
+<div class="point">
+<h3><i class="fa-solid fa-leaf"></i> Smart Crop Health Insights with AI</h3>
+<p>AI helps detect crop diseases and gives practical advice.</p>
+</div>
+
+<div class="point">
+<h3><i class="fa-solid fa-droplet"></i> Smart Irrigation with IoT</h3>
+<p>Soil sensors help water crops efficiently, saving water.</p>
+</div>
+
+<div class="point">
+<h3><i class="fa-solid fa-cloud-sun-rain"></i> Real-Time Weather Updates</h3>
+<p>Farmers get live weather alerts.</p>
+</div>
+
+<div class="point">
+<h3><i class="fa-solid fa-location-dot"></i> Live GPS Tracking of Deliveries</h3>
+<p>Both farmers and companies can track deliveries in real-time.</p>
+</div>
+
+<div class="point">
+<h3><i class="fa-solid fa-bell"></i> Instant Order Notifications</h3>
+<p>Quick updates on orders via dashboard or messages.</p>
+</div>
+
+<div class="point">
+<h3><i class="fa-solid fa-hand-holding-dollar"></i> Cost Savings for Companies</h3>
+<p>No middlemen means lower operational costs.</p>
+</div>
+
+<div class="point">
+<h3><i class="fa-solid fa-network-wired"></i> Strong and Transparent Supply Chain</h3>
+<p>Builds trust, improves efficiency, strengthens business relationships.</p>
+</div>
+
+</div>
+</div>
+
+<!-- VIDEO -->
+<div class="video-section">
+<h2>Project Demo: Farmers Connect with Companies</h2>
+<div class="video-container">
+<video controls autoplay muted loop>
+  <source src="farmers-company-demo.mp4" type="video/mp4">
+</video>
+</div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section">
+<h2>How It Works</h2>
+<div class="cards">
+<div class="card">🌾<p>Farmers upload crops & fruits.</p></div>
+<div class="card">💰<p>Companies offer fair pricing.</p></div>
+<div class="card">🚚<p>Safe and transparent delivery.</p></div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">© 2026 Krishibandh | All Rights Reserved</div>
+
+</body>
+</html>

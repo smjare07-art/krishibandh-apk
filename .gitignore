@@ -1,0 +1,6 @@
+node_modules/
+krishibandh-backend/node_modules/
+.env
+krishibandh-backend/.env
+uploads/
+krishibandh-backend/uploads/
