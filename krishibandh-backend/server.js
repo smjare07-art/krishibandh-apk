@@ -428,22 +428,6 @@ app.get("/application/:id", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-// ================= COMPANY PAID DEALS =================
-app.get("/company/paid-deals/:companyId", async (req, res) => {
-  try {
-
-    const deals = await Application.find({
-      companyId: req.params.companyId,
-      status: "accepted",
-      paymentStatus: "paid"
-    }).sort({ createdAt: -1 });
-
-    res.json(deals);
-
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
 
 // ===== START SERVER =====
 const PORT = process.env.PORT || 5000;

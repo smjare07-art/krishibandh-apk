@@ -1,1 +1,45 @@
- deal-history.html
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <title>Company Deal History</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border-left: 6px solid green;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .paid {
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h2>💰 Completed Deals (Paid)</h2>
+
+<div id="dealList">
+  ⏳ Loading deals...
+</div>
+
+<script src="../js/company-dealhistory.js"></script>
+
+</body>
+</html>
