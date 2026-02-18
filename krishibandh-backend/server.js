@@ -9,6 +9,7 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 import nodemailer from "nodemailer";
 import Razorpay from "razorpay";
+import PDFDocument from "pdfkit";
 
 dotenv.config(); // 🔥 MUST BE HERE
 
@@ -444,7 +445,52 @@ app.get("/company/paid-deals/:companyId", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+// ================= DOWNLOAD INVOICE PDF =================
+app.get("/invoice/:id", async (req, res) => {
+  try {
 
+    const deal = await Application.findById(req.params.id);
+
+    if (!deal) {
+      return res.status(404).json({ message: "Deal not found" });
+    }
+
+    const doc = new PDFDocument({ margin: 50 });
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=Invoice-${deal.invoiceId || deal._id}.pdf`
+    );
+
+    doc.pipe(res);
+
+    // ===== HEADER =====
+    doc.fontSize(20).text("Krishibandh Invoice", { align: "center" });
+    doc.moveDown();
+
+    doc.fontSize(12);
+    doc.text("Invoice ID: " + (deal.invoiceId || "-"));
+    doc.text("Date: " + new Date().toLocaleDateString());
+    doc.moveDown();
+
+    doc.text("Farmer ID: " + deal.farmerId);
+    doc.text("Company ID: " + deal.companyId);
+    doc.moveDown();
+
+    doc.text("Crop Quantity: " + deal.quantity);
+    doc.text("Final Price: ₹" + deal.finalPrice);
+    doc.moveDown();
+
+    doc.fontSize(14).text("Payment Status: PAID");
+
+    doc.end();
+
+  } catch (err) {
+    console.log("Invoice Error:", err);
+    res.status(500).json({ message: err.message });
+  }
+});
 // ===== START SERVER =====
 const PORT = process.env.PORT || 5000;
 
