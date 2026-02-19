@@ -5,39 +5,20 @@
 
   // ===== CONFIG =====
   const MANDI_API_KEY = "579b464db66ec23bdd000001343c9c4cc0464bb66221e639d0cc6174";
-  const PEXELS_API_KEY = "pEcUKpYvD5puZWNoF7oy6L75AlnPs6sYLFcPolhkEo0YaPIG6ioZ2YFn";
 
   const MANDI_URL =
     "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070";
 
   let allRecords = [];
   let favorites = JSON.parse(localStorage.getItem("favMandis") || "[]");
-  let imageCache = {};
 
-  // ===== FETCH IMAGE FROM PEXELS =====
+  // ===== GET IMAGE FROM BACKEND =====
   async function getCropImage(query) {
-
-    if (imageCache[query]) return imageCache[query];
-
     try {
-      const res = await fetch(
-        `https://api.pexels.com/v1/search?query=${query}&per_page=1`,
-        {
-          headers: {
-            Authorization: PEXELS_API_KEY
-          }
-        }
-      );
-
+      const res = await fetch(`/api/crop-image?q=${encodeURIComponent(query)}`);
       const data = await res.json();
-      const image =
-        data.photos?.[0]?.src?.medium ||
-        "https://via.placeholder.com/400x300?text=Crop";
-
-      imageCache[query] = image;
-      return image;
-
-    } catch (err) {
+      return data.image;
+    } catch {
       return "https://via.placeholder.com/400x300?text=Crop";
     }
   }
@@ -47,6 +28,8 @@
 
     const state = document.getElementById("stateSelect")?.value || "Maharashtra";
     const container = document.getElementById("mandiRates");
+
+    if (!container) return;
 
     container.innerHTML = "⏳ Loading...";
 
@@ -83,10 +66,12 @@
     renderMarket(filtered);
   }
 
-  // ===== RENDER MARKET WITH IMAGE =====
+  // ===== RENDER MARKET =====
   async function renderMarket(records) {
 
     const container = document.getElementById("mandiRates");
+    if (!container) return;
+
     container.innerHTML = "";
 
     if (!records.length) {
@@ -108,7 +93,8 @@
       card.innerHTML = `
         <span class="star">${isFav ? "⭐" : "☆"}</span>
 
-        <img src="${imageUrl}" class="cropImg"/>
+        <img src="${imageUrl}" class="cropImg" 
+             onerror="this.src='https://via.placeholder.com/400x300?text=Crop'" />
 
         <h3>${item.commodity}</h3>
         <div>📍 ${item.market}</div>
@@ -144,6 +130,8 @@
   function renderFavorites() {
 
     const favDiv = document.getElementById("favList");
+    if (!favDiv) return;
+
     favDiv.innerHTML = "";
 
     if (!favorites.length) {
