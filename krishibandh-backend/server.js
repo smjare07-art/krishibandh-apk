@@ -492,6 +492,40 @@ app.get("/invoice/:id", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+// ================= CROP IMAGE API =================
+app.get("/api/crop-image", async (req, res) => {
+  try {
+    const query = req.query.q;
+
+    if (!query) {
+      return res.json({
+        image: "https://via.placeholder.com/400x300?text=Crop"
+      });
+    }
+
+    const response = await axios.get(
+      `https://api.pexels.com/v1/search?query=${query}&per_page=1`,
+      {
+        headers: {
+          Authorization: process.env.PEXELS_API_KEY
+        }
+      }
+    );
+
+    const image =
+      response.data.photos?.[0]?.src?.medium ||
+      "https://via.placeholder.com/400x300?text=Crop";
+
+    res.json({ image });
+
+  } catch (error) {
+    console.log("Pexels Error:", error.message);
+    res.json({
+      image: "https://via.placeholder.com/400x300?text=Crop"
+    });
+  }
+});
+
 // ===== START SERVER =====
 const PORT = process.env.PORT || 5000;
 
