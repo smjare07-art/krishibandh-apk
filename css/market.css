@@ -122,3 +122,66 @@ body{
   border-radius:15px;
   margin-bottom:10px;
 }
+.marketCard{
+  display:flex;
+  justify-content:space-between;
+  background:#fff;
+  margin:15px;
+  border-radius:20px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.08);
+  overflow:hidden;
+}
+
+.cardLeft{
+  padding:15px;
+  flex:1;
+}
+
+.cardRight{
+  position:relative;
+  width:40%;
+}
+
+.cardRight img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.favStar{
+  position:absolute;
+  top:10px;
+  right:10px;
+  font-size:20px;
+  cursor:pointer;
+}
+
+.price{
+  color:#1f7a3f;
+  font-weight:600;
+  margin:6px 0;
+}
+
+.bottomRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:10px;
+}
+
+.shareBtn{
+  background:#25D366;
+  border:none;
+  padding:8px 15px;
+  border-radius:20px;
+  color:#fff;
+  cursor:pointer;
+}
+
+.priceChange{
+  background:#e6f5ea;
+  color:#1f7a3f;
+  padding:6px 10px;
+  border-radius:15px;
+  font-weight:600;
+}

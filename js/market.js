@@ -3,10 +3,10 @@
   if (window.marketAppLoaded) return;
   window.marketAppLoaded = true;
 
-  // ===== CONFIG =====
   const BASE_URL = "https://krishibandh-backend.onrender.com";
 
-  const MANDI_API_KEY = "579b464db66ec23bdd000001343c9c4cc0464bb66221e639d0cc6174";
+  const MANDI_API_KEY =
+    "579b464db66ec23bdd000001343c9c4cc0464bb66221e639d0cc6174";
 
   const MANDI_URL =
     "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070";
@@ -14,35 +14,27 @@
   let allRecords = [];
   let favorites = JSON.parse(localStorage.getItem("favMandis") || "[]");
 
-  // ===== GET IMAGE FROM BACKEND =====
   async function getCropImage(query) {
     try {
       const res = await fetch(
         `${BASE_URL}/api/crop-image?q=${encodeURIComponent(query)}`
       );
-
-      if (!res.ok) throw new Error("Image fetch failed");
-
       const data = await res.json();
       return data.image;
     } catch {
-      return "https://via.placeholder.com/400x300?text=Crop";
+      return "https://via.placeholder.com/300x200?text=Crop";
     }
   }
 
-  // ===== LOAD MARKET =====
   window.loadMarket = async function () {
 
     const state =
       document.getElementById("stateSelect")?.value || "Maharashtra";
 
     const container = document.getElementById("mandiRates");
-    if (!container) return;
-
     container.innerHTML = "⏳ Loading...";
 
     try {
-
       const url =
         `${MANDI_URL}?api-key=${MANDI_API_KEY}` +
         `&format=json&filters[state]=${state}&limit=20`;
@@ -55,12 +47,11 @@
       applyFilters();
       renderFavorites();
 
-    } catch (err) {
-      container.innerHTML = "⚠️ Error loading mandi data";
+    } catch {
+      container.innerHTML = "⚠️ Error loading data";
     }
   };
 
-  // ===== FILTER =====
   function applyFilters() {
 
     const crop =
@@ -77,12 +68,9 @@
     renderMarket(filtered);
   }
 
-  // ===== RENDER MARKET =====
   async function renderMarket(records) {
 
     const container = document.getElementById("mandiRates");
-    if (!container) return;
-
     container.innerHTML = "";
 
     if (!records.length) {
@@ -99,31 +87,41 @@
 
       const imageUrl = await getCropImage(item.commodity);
 
+      const change =
+        Number(item.max_price) - Number(item.min_price);
+
       const card = document.createElement("div");
-      card.className = "card";
+      card.className = "marketCard";
 
       card.innerHTML = `
-        <span class="star">${isFav ? "⭐" : "☆"}</span>
+        <div class="cardLeft">
+          <h3>${item.commodity}</h3>
+          <div class="market">📍 ${item.market}</div>
+          <div class="price">Min ₹${item.min_price} | Max ₹${item.max_price}</div>
+          <div class="date">📅 ${item.arrival_date}</div>
 
-        <img src="${imageUrl}" class="cropImg"
-             onerror="this.src='https://via.placeholder.com/400x300?text=Crop'" />
+          <div class="bottomRow">
+            <button class="shareBtn">🟢 Share</button>
+            <div class="priceChange">
+              ↑ ₹${change}
+            </div>
+          </div>
+        </div>
 
-        <h3>${item.commodity}</h3>
-        <div>📍 ${item.market}</div>
-        <div class="price">Min ₹${item.min_price} | Max ₹${item.max_price}</div>
-        <div>📅 ${item.arrival_date}</div>
-
-        <button class="shareBtn">📤 Share</button>
+        <div class="cardRight">
+          <img src="${imageUrl}"
+               onerror="this.src='https://via.placeholder.com/300x200?text=Crop'" />
+          <span class="favStar">${isFav ? "⭐" : "☆"}</span>
+        </div>
       `;
 
-      card.querySelector(".star").onclick = () => toggleFav(item);
+      card.querySelector(".favStar").onclick = () => toggleFav(item);
       card.querySelector(".shareBtn").onclick = () => shareWhatsApp(item);
 
       container.appendChild(card);
     }
   }
 
-  // ===== FAVORITES =====
   function toggleFav(item) {
 
     const index = favorites.findIndex(f =>
@@ -136,15 +134,13 @@
 
     localStorage.setItem("favMandis", JSON.stringify(favorites));
 
-    renderFavorites();
     applyFilters();
+    renderFavorites();
   }
 
   function renderFavorites() {
 
     const favDiv = document.getElementById("favList");
-    if (!favDiv) return;
-
     favDiv.innerHTML = "";
 
     if (!favorites.length) {
@@ -153,38 +149,31 @@
     }
 
     favorites.forEach(item => {
-
       const div = document.createElement("div");
-      div.className = "card";
+      div.className = "favItem";
       div.innerHTML = `⭐ ${item.market} – ${item.commodity}`;
-
       favDiv.appendChild(div);
     });
   }
 
-  // ===== SHARE =====
   function shareWhatsApp(item) {
 
     const text =
       `🌾 Crop: ${item.commodity}\n` +
       `📍 Market: ${item.market}\n` +
       `💰 Min: ₹${item.min_price}\n` +
-      `💰 Max: ₹${item.max_price}\n` +
-      `📅 Date: ${item.arrival_date}`;
+      `💰 Max: ₹${item.max_price}`;
 
-    const url =
-      "https://wa.me/?text=" + encodeURIComponent(text);
-
-    window.open(url, "_blank");
+    window.open(
+      "https://wa.me/?text=" + encodeURIComponent(text),
+      "_blank"
+    );
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-
     loadMarket();
-
     document.getElementById("cropInput")
       ?.addEventListener("input", applyFilters);
-
     document.getElementById("marketInput")
       ?.addEventListener("input", applyFilters);
   });
