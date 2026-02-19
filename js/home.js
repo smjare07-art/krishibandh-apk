@@ -1,6 +1,11 @@
 // ================= BASE URL =================
 const BASE_URL = "https://krishibandh-backend.onrender.com";
 
+// Login नसेल तर login page ला redirect
+if (!localStorage.getItem("userId")) {
+  window.location.href = "login.html";
+}
+
 // ================= SIDEBAR =================
 window.openSidebar = function () {
   var sidebar = document.getElementById("sidebar");
