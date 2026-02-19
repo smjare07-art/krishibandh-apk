@@ -11,6 +11,7 @@ import nodemailer from "nodemailer";
 import Razorpay from "razorpay";
 import PDFDocument from "pdfkit";
 
+
 dotenv.config(); // 🔥 MUST BE HERE
 
 const razorpay = new Razorpay({
