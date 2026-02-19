@@ -1,6 +1,4 @@
-// ================= MANDI CONFIG =================
-const MANDI_API_KEY =
-  "579b464db66ec23bdd000001343c9c4cc0464bb66221e639d0cc6174";
+const MANDI_API_KEY = "579b464db66ec23bdd000001343c9c4cc0464bb66221e639d0cc6174";
 
 const MANDI_URL =
   "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070";
@@ -8,8 +6,6 @@ const MANDI_URL =
 let allRecords = [];
 let favorites = JSON.parse(localStorage.getItem("favMandis") || "[]");
 
-
-// ================= LOAD MARKET =================
 window.loadMarket = async function () {
 
   const state = document.getElementById("stateSelect").value;
@@ -32,13 +28,10 @@ window.loadMarket = async function () {
     renderFavorites();
 
   } catch (err) {
-    console.log(err);
     container.innerHTML = "⚠️ Error loading mandi data";
   }
 };
 
-
-// ================= FILTER =================
 function applyFilters() {
 
   const crop = document.getElementById("cropInput").value.toLowerCase();
@@ -53,8 +46,6 @@ function applyFilters() {
   drawGraph(filtered.slice(0, 10));
 }
 
-
-// ================= RENDER MARKET =================
 function renderMarket(records) {
 
   const container = document.getElementById("mandiRates");
@@ -76,29 +67,20 @@ function renderMarket(records) {
 
     card.innerHTML = `
       <span class="star">${isFav ? "⭐" : "☆"}</span>
-      🌾 <b>${item.commodity}</b><br>
-      📍 ${item.market}<br>
-      💰 Min ₹${item.min_price} | Max ₹${item.max_price}<br>
-      📅 ${item.arrival_date}<br><br>
-      <button class="shareBtn">📤 Share WhatsApp</button>
+      <h3>${item.commodity}</h3>
+      <div>📍 ${item.market}</div>
+      <div class="price">Min ₹${item.min_price} | Max ₹${item.max_price}</div>
+      <div>📅 ${item.arrival_date}</div>
+      <button class="shareBtn">📤 Share</button>
     `;
 
-    // ⭐ Favorite toggle
-    card.querySelector(".star").onclick = function () {
-      toggleFav(item);
-    };
-
-    // 📤 WhatsApp share
-    card.querySelector(".shareBtn").onclick = function () {
-      shareWhatsApp(item);
-    };
+    card.querySelector(".star").onclick = () => toggleFav(item);
+    card.querySelector(".shareBtn").onclick = () => shareWhatsApp(item);
 
     container.appendChild(card);
   });
 }
 
-
-// ================= FAVORITES =================
 function toggleFav(item) {
 
   const index = favorites.findIndex(f =>
@@ -120,7 +102,7 @@ function renderFavorites() {
   favDiv.innerHTML = "";
 
   if (!favorites.length) {
-    favDiv.innerHTML = "<p>No favorites yet</p>";
+    favDiv.innerHTML = "<p style='padding-left:15px'>No favorites yet</p>";
     return;
   }
 
@@ -134,8 +116,6 @@ function renderFavorites() {
   });
 }
 
-
-// ================= GRAPH =================
 function drawGraph(records) {
 
   const canvas = document.getElementById("priceChart");
@@ -143,16 +123,9 @@ function drawGraph(records) {
 
   const ctx = canvas.getContext("2d");
 
-  // 🔥 ULTRA SAFE DESTROY FIX
-  if (
-    window.priceChart &&
-    typeof window.priceChart === "object" &&
-    typeof window.priceChart.destroy === "function"
-  ) {
-    window.priceChart.destroy();
-  }
+  if (window.priceChart) window.priceChart.destroy();
 
-  if (!records || records.length === 0) return;
+  if (!records.length) return;
 
   window.priceChart = new Chart(ctx, {
     type: "line",
@@ -173,29 +146,23 @@ function drawGraph(records) {
         }
       ]
     },
-    options: {
-      responsive: true
-    }
+    options: { responsive: true }
   });
 }
 
-// ================= WHATSAPP SHARE =================
 function shareWhatsApp(item) {
 
   const text =
     `🌾 Crop: ${item.commodity}\n` +
     `📍 Market: ${item.market}\n` +
-    `💰 Min Price: ₹${item.min_price}\n` +
-    `💰 Max Price: ₹${item.max_price}\n` +
-    `📅 Date: ${item.arrival_date}\n\n` +
-    `📊 Krishibandh App`;
+    `💰 Min: ₹${item.min_price}\n` +
+    `💰 Max: ₹${item.max_price}\n` +
+    `📅 Date: ${item.arrival_date}`;
 
   const url = "https://wa.me/?text=" + encodeURIComponent(text);
   window.open(url, "_blank");
 }
 
-
-// ================= AUTO LOAD =================
 loadMarket();
 
 document.getElementById("cropInput").addEventListener("input", applyFilters);

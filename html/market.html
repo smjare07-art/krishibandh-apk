@@ -43,3 +43,58 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <title>बाजारभाव</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/market.css" />
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <span onclick="history.back()">←</span>
+  <h2>बाजारभाव</h2>
+  <span onclick="loadMarket()">⟳</span>
+</div>
+
+<!-- SEARCH -->
+<div class="searchBox">
+  <input id="cropInput" placeholder="🔍 Search crop" />
+  <input id="marketInput" placeholder="📍 Market / District" />
+  
+  <select id="stateSelect">
+    <option value="Maharashtra">Maharashtra</option>
+    <option value="Karnataka">Karnataka</option>
+    <option value="Gujarat">Gujarat</option>
+  </select>
+
+  <button onclick="loadMarket()">Search</button>
+</div>
+
+<!-- FAVORITES -->
+<div class="sectionTitle">⭐ Favorite Mandis</div>
+<div id="favList" class="list"></div>
+
+<!-- MARKET -->
+<div class="sectionTitle">📊 Live Market Rates</div>
+<div id="mandiRates" class="list">⏳ Loading...</div>
+
+<!-- GRAPH -->
+<canvas id="priceChart" style="margin:15px"></canvas>
+
+<!-- FLOAT BUTTON -->
+<button class="floatingBtn">⚙</button>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../js/market.js"></script>
+
+</body>
+</html>

@@ -1,81 +1,110 @@
 body{
   margin:0;
-  font-family: Arial, sans-serif;
-  background:#f5f7f7;
+  font-family: 'Poppins', sans-serif;
+  background:#f2f5f3;
 }
 
-.topbar{
-  background:#1f7a3f;
-  color:#fff;
-  padding:15px;
+/* HEADER */
+.header{
+  background:linear-gradient(135deg,#2e8b57,#1f7a3f);
+  color:white;
+  padding:18px;
   display:flex;
-  gap:15px;
+  justify-content:space-between;
   align-items:center;
-}
-
-.filter{
-  display:flex;
-  gap:10px;
-  padding:15px;
-}
-
-.filter select, .filter button{
-  padding:8px;
-  font-size:14px;
-}
-
-.list{
-  padding:10px;
-}
-
-.card{
-  background:#fff;
-  padding:12px;
-  margin:10px 0;
-  border-radius:10px;
-  box-shadow:0 3px 8px rgba(0,0,0,0.1);
-}
-body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#f5f7f7;
-}
-
-.topbar{
-  background:#1f7a3f;
-  color:#fff;
-  padding:15px;
-  display:flex;
-  gap:15px;
-  align-items:center;
-}
-
-.filter{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  padding:10px;
-}
-
-.filter input, .filter select, .filter button{
-  padding:8px;
-  font-size:14px;
-}
-
-.list{
-  padding:10px;
-}
-
-.card{
-  background:#fff;
-  padding:12px;
-  margin:10px 0;
-  border-radius:10px;
-  box-shadow:0 3px 8px rgba(0,0,0,0.1);
-}
-
-.star{
-  float:right;
-  cursor:pointer;
+  font-weight:600;
   font-size:18px;
+}
+
+/* SEARCH */
+.searchBox{
+  padding:15px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.searchBox input,
+.searchBox select{
+  padding:12px;
+  border-radius:25px;
+  border:none;
+  box-shadow:0 3px 8px rgba(0,0,0,0.1);
+  font-size:14px;
+}
+
+.searchBox button{
+  padding:12px;
+  border-radius:25px;
+  border:none;
+  background:#1f7a3f;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* SECTION */
+.sectionTitle{
+  padding:10px 15px;
+  font-weight:600;
+  color:#444;
+}
+
+/* CARD */
+.card{
+  background:white;
+  margin:12px;
+  padding:15px;
+  border-radius:18px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.08);
+  position:relative;
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:scale(1.02);
+}
+
+/* STAR */
+.star{
+  position:absolute;
+  right:15px;
+  top:15px;
+  font-size:20px;
+  cursor:pointer;
+}
+
+/* PRICE */
+.price{
+  font-weight:600;
+  color:#1f7a3f;
+  margin-top:5px;
+}
+
+/* SHARE */
+.shareBtn{
+  margin-top:10px;
+  background:#25D366;
+  border:none;
+  padding:8px 15px;
+  border-radius:20px;
+  color:white;
+  cursor:pointer;
+  font-size:13px;
+}
+
+/* FLOAT BUTTON */
+.floatingBtn{
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  background:#1f7a3f;
+  color:white;
+  border:none;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  font-size:22px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+  cursor:pointer;
 }
