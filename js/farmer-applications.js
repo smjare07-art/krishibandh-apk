@@ -1,3 +1,5 @@
+const BASE_URL = "https://krishibandh-backend.onrender.com";
+
 const farmerId = localStorage.getItem("userId");
 
 if (!farmerId) {
@@ -8,17 +10,17 @@ if (!farmerId) {
 async function loadMyApplications() {
 
   const container = document.getElementById("myApplications");
-
   if (!container) return;
 
   try {
 
     const res = await fetch(
-      "http://localhost:5000/farmer/applications/" + farmerId
+      `${BASE_URL}/farmer/applications/${farmerId}`
     );
 
     if (!res.ok) {
       console.log("Route error:", res.status);
+      container.innerHTML = "<p>Error loading applications</p>";
       return;
     }
 
@@ -26,36 +28,37 @@ async function loadMyApplications() {
 
     container.innerHTML = "";
 
-    if (applications.length === 0) {
+    if (!applications || applications.length === 0) {
       container.innerHTML = "<p>No applications yet</p>";
       return;
     }
 
     applications.forEach(a => {
 
+      let statusText = (a.status || "Pending").toLowerCase();
       let color = "gray";
 
-      if (a.status === "Accepted") color = "green";
-      if (a.status === "Rejected") color = "red";
-      if (a.status === "Bargaining") color = "orange";
+      if (statusText === "accepted") color = "green";
+      if (statusText === "rejected") color = "red";
+      if (statusText === "bargaining") color = "orange";
 
-     container.innerHTML += `
-  <div style="border:1px solid #333;padding:15px;margin:15px;border-radius:10px">
-    🏢 Company: ${a.companyName}<br>
-    📦 Quantity: ${a.quantity || "-"}<br>
-    💰 Price: ₹${a.price || "-"}<br>
-    💬 Message: ${a.message || "-"}<br>
-    📊 Status: <b style="color:${color}">
-      ${a.status || "Pending"}
-    </b><br><br>
-    ${a.image ? `<img src="http://localhost:5000/${a.image}" width="150">` : ""}
-  </div>
-`;
-
+      container.innerHTML += `
+        <div style="border:1px solid #333;padding:15px;margin:15px;border-radius:10px">
+          🏢 Company: ${a.companyName || "-"}<br>
+          📦 Quantity: ${a.quantity || "-"}<br>
+          💰 Price: ₹${a.price || "-"}<br>
+          💬 Message: ${a.message || "-"}<br>
+          📊 Status: <b style="color:${color}">
+            ${a.status || "Pending"}
+          </b><br><br>
+          ${a.image ? `<img src="${BASE_URL}/${a.image}" width="150">` : ""}
+        </div>
+      `;
     });
 
   } catch (err) {
     console.log("Farmer Applications Error:", err);
+    container.innerHTML = "<p>Server error</p>";
   }
 }
 
