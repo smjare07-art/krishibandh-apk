@@ -1,7 +1,6 @@
 // ================= BASE URL =================
 const BASE_URL = "https://krishibandh-backend.onrender.com";
 
-
 // ================= SIDEBAR =================
 window.openSidebar = function () {
   var sidebar = document.getElementById("sidebar");
@@ -43,7 +42,13 @@ document.addEventListener("DOMContentLoaded", async function () {
   try {
 
     var res = await fetch(BASE_URL + "/user/" + userId);
-    if (!res.ok) return;
+
+    // 🔥 If invalid user → logout
+    if (!res.ok) {
+      localStorage.clear();
+      window.location.href = "index.html";
+      return;
+    }
 
     var user = await res.json();
 
@@ -76,6 +81,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   } catch (err) {
     console.log("Error loading user:", err);
+    localStorage.clear();
+    window.location.href = "index.html";
   }
 
 });
@@ -118,8 +125,11 @@ function loadWeather() {
       const cityEl = document.getElementById("weatherCity");
       const iconEl = document.getElementById("weatherIcon");
 
-      if (tempEl) tempEl.innerText = Math.round(data.main.temp) + "°C";
-      if (cityEl) cityEl.innerText = data.name;
+      if (tempEl && data.main)
+        tempEl.innerText = Math.round(data.main.temp) + "°C";
+
+      if (cityEl)
+        cityEl.innerText = data.name || "";
 
       if (iconEl && data.weather && data.weather.length > 0) {
 
@@ -140,5 +150,8 @@ function loadWeather() {
       console.log("Weather error:", err);
     }
 
+  }, function () {
+    console.log("Geolocation permission denied");
   });
+
 }
