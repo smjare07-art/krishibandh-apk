@@ -1,7 +1,3 @@
-// जर user आधीच login असेल तर direct home ला पाठव
-if (localStorage.getItem("userId")) {
-  window.location.href = "home.html";
-}
 
 // ================= POPUP =================
 function showPopup(msg) {
