@@ -4,6 +4,8 @@
   window.marketAppLoaded = true;
 
   // ===== CONFIG =====
+  const BASE_URL = "https://krishibandh-backend.onrender.com";
+
   const MANDI_API_KEY = "579b464db66ec23bdd000001343c9c4cc0464bb66221e639d0cc6174";
 
   const MANDI_URL =
@@ -15,7 +17,12 @@
   // ===== GET IMAGE FROM BACKEND =====
   async function getCropImage(query) {
     try {
-      const res = await fetch(`/api/crop-image?q=${encodeURIComponent(query)}`);
+      const res = await fetch(
+        `${BASE_URL}/api/crop-image?q=${encodeURIComponent(query)}`
+      );
+
+      if (!res.ok) throw new Error("Image fetch failed");
+
       const data = await res.json();
       return data.image;
     } catch {
@@ -26,9 +33,10 @@
   // ===== LOAD MARKET =====
   window.loadMarket = async function () {
 
-    const state = document.getElementById("stateSelect")?.value || "Maharashtra";
-    const container = document.getElementById("mandiRates");
+    const state =
+      document.getElementById("stateSelect")?.value || "Maharashtra";
 
+    const container = document.getElementById("mandiRates");
     if (!container) return;
 
     container.innerHTML = "⏳ Loading...";
@@ -55,8 +63,11 @@
   // ===== FILTER =====
   function applyFilters() {
 
-    const crop = document.getElementById("cropInput")?.value.toLowerCase() || "";
-    const market = document.getElementById("marketInput")?.value.toLowerCase() || "";
+    const crop =
+      document.getElementById("cropInput")?.value.toLowerCase() || "";
+
+    const market =
+      document.getElementById("marketInput")?.value.toLowerCase() || "";
 
     const filtered = allRecords.filter(r =>
       (r.commodity || "").toLowerCase().includes(crop) &&
@@ -82,7 +93,8 @@
     for (const item of records) {
 
       const isFav = favorites.some(f =>
-        f.market === item.market && f.commodity === item.commodity
+        f.market === item.market &&
+        f.commodity === item.commodity
       );
 
       const imageUrl = await getCropImage(item.commodity);
@@ -93,7 +105,7 @@
       card.innerHTML = `
         <span class="star">${isFav ? "⭐" : "☆"}</span>
 
-        <img src="${imageUrl}" class="cropImg" 
+        <img src="${imageUrl}" class="cropImg"
              onerror="this.src='https://via.placeholder.com/400x300?text=Crop'" />
 
         <h3>${item.commodity}</h3>
@@ -115,7 +127,8 @@
   function toggleFav(item) {
 
     const index = favorites.findIndex(f =>
-      f.market === item.market && f.commodity === item.commodity
+      f.market === item.market &&
+      f.commodity === item.commodity
     );
 
     if (index >= 0) favorites.splice(index, 1);
@@ -159,7 +172,9 @@
       `💰 Max: ₹${item.max_price}\n` +
       `📅 Date: ${item.arrival_date}`;
 
-    const url = "https://wa.me/?text=" + encodeURIComponent(text);
+    const url =
+      "https://wa.me/?text=" + encodeURIComponent(text);
+
     window.open(url, "_blank");
   }
 
@@ -167,8 +182,11 @@
 
     loadMarket();
 
-    document.getElementById("cropInput")?.addEventListener("input", applyFilters);
-    document.getElementById("marketInput")?.addEventListener("input", applyFilters);
+    document.getElementById("cropInput")
+      ?.addEventListener("input", applyFilters);
+
+    document.getElementById("marketInput")
+      ?.addEventListener("input", applyFilters);
   });
 
 })();
