@@ -1,17 +1,46 @@
 (function () {
 
-  // ===== SAFE GLOBAL CHECK =====
   if (window.marketAppLoaded) return;
   window.marketAppLoaded = true;
 
   // ===== CONFIG =====
   const MANDI_API_KEY = "579b464db66ec23bdd000001343c9c4cc0464bb66221e639d0cc6174";
+  const PEXELS_API_KEY = "pEcUKpYvD5puZWNoF7oy6L75AlnPs6sYLFcPolhkEo0YaPIG6ioZ2YFn";
 
   const MANDI_URL =
     "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070";
 
   let allRecords = [];
   let favorites = JSON.parse(localStorage.getItem("favMandis") || "[]");
+  let imageCache = {};
+
+  // ===== FETCH IMAGE FROM PEXELS =====
+  async function getCropImage(query) {
+
+    if (imageCache[query]) return imageCache[query];
+
+    try {
+      const res = await fetch(
+        `https://api.pexels.com/v1/search?query=${query}&per_page=1`,
+        {
+          headers: {
+            Authorization: PEXELS_API_KEY
+          }
+        }
+      );
+
+      const data = await res.json();
+      const image =
+        data.photos?.[0]?.src?.medium ||
+        "https://via.placeholder.com/400x300?text=Crop";
+
+      imageCache[query] = image;
+      return image;
+
+    } catch (err) {
+      return "https://via.placeholder.com/400x300?text=Crop";
+    }
+  }
 
   // ===== LOAD MARKET =====
   window.loadMarket = async function () {
@@ -19,15 +48,13 @@
     const state = document.getElementById("stateSelect")?.value || "Maharashtra";
     const container = document.getElementById("mandiRates");
 
-    if (!container) return;
-
-    container.innerHTML = "⏳ Loading mandi rates...";
+    container.innerHTML = "⏳ Loading...";
 
     try {
 
       const url =
         `${MANDI_URL}?api-key=${MANDI_API_KEY}` +
-        `&format=json&filters[state]=${state}&limit=50`;
+        `&format=json&filters[state]=${state}&limit=20`;
 
       const res = await fetch(url);
       const data = await res.json();
@@ -38,7 +65,6 @@
       renderFavorites();
 
     } catch (err) {
-      console.error(err);
       container.innerHTML = "⚠️ Error loading mandi data";
     }
   };
@@ -55,15 +81,12 @@
     );
 
     renderMarket(filtered);
-    drawGraph(filtered.slice(0, 10));
   }
 
-  // ===== RENDER MARKET =====
-  function renderMarket(records) {
+  // ===== RENDER MARKET WITH IMAGE =====
+  async function renderMarket(records) {
 
     const container = document.getElementById("mandiRates");
-    if (!container) return;
-
     container.innerHTML = "";
 
     if (!records.length) {
@@ -71,21 +94,27 @@
       return;
     }
 
-    records.forEach(item => {
+    for (const item of records) {
 
       const isFav = favorites.some(f =>
         f.market === item.market && f.commodity === item.commodity
       );
+
+      const imageUrl = await getCropImage(item.commodity);
 
       const card = document.createElement("div");
       card.className = "card";
 
       card.innerHTML = `
         <span class="star">${isFav ? "⭐" : "☆"}</span>
+
+        <img src="${imageUrl}" class="cropImg"/>
+
         <h3>${item.commodity}</h3>
         <div>📍 ${item.market}</div>
         <div class="price">Min ₹${item.min_price} | Max ₹${item.max_price}</div>
         <div>📅 ${item.arrival_date}</div>
+
         <button class="shareBtn">📤 Share</button>
       `;
 
@@ -93,7 +122,7 @@
       card.querySelector(".shareBtn").onclick = () => shareWhatsApp(item);
 
       container.appendChild(card);
-    });
+    }
   }
 
   // ===== FAVORITES =====
@@ -115,12 +144,10 @@
   function renderFavorites() {
 
     const favDiv = document.getElementById("favList");
-    if (!favDiv) return;
-
     favDiv.innerHTML = "";
 
     if (!favorites.length) {
-      favDiv.innerHTML = "<p style='padding-left:15px'>No favorites yet</p>";
+      favDiv.innerHTML = "<p>No favorites yet</p>";
       return;
     }
 
@@ -134,46 +161,7 @@
     });
   }
 
-  // ===== GRAPH =====
-  function drawGraph(records) {
-
-    const canvas = document.getElementById("priceChart");
-    if (!canvas || typeof Chart === "undefined") return;
-
-    const ctx = canvas.getContext("2d");
-
-    if (window.priceChart && typeof window.priceChart.destroy === "function") {
-      window.priceChart.destroy();
-    }
-
-    if (!records.length) return;
-
-    window.priceChart = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: records.map(r => r.market),
-        datasets: [
-          {
-            label: "Max Price ₹",
-            data: records.map(r => Number(r.max_price)),
-            borderWidth: 2,
-            tension: 0.3
-          },
-          {
-            label: "Min Price ₹",
-            data: records.map(r => Number(r.min_price)),
-            borderWidth: 2,
-            tension: 0.3
-          }
-        ]
-      },
-      options: {
-        responsive: true
-      }
-    });
-  }
-
-  // ===== WHATSAPP SHARE =====
+  // ===== SHARE =====
   function shareWhatsApp(item) {
 
     const text =
@@ -187,7 +175,6 @@
     window.open(url, "_blank");
   }
 
-  // ===== AUTO LOAD =====
   document.addEventListener("DOMContentLoaded", () => {
 
     loadMarket();
