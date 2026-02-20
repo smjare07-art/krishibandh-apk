@@ -41,7 +41,7 @@ async function analyzeImage() {
   document.getElementById("resultText").innerText = "⏳ analysing...";
 
   try {
-    const res = await fetch("https://krishibandh-cropanaliys.onrender.com/predict", {
+    const res = await fetch("https://smjare-krishibandh-crop-analysis.hf.space/predict", {
       method: "POST",
       body: formData
     });
