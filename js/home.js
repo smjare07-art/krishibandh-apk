@@ -3,16 +3,16 @@ const BASE_URL = "https://krishibandh-backend.onrender.com";
 
 // ================= SIDEBAR =================
 window.openSidebar = function () {
-  const sidebar = document.getElementById("sidebar");
-  const overlay = document.getElementById("overlay");
+  var sidebar = document.getElementById("sidebar");
+  var overlay = document.getElementById("overlay");
 
   if (sidebar) sidebar.classList.add("open");
   if (overlay) overlay.style.display = "block";
 };
 
 window.closeSidebar = function () {
-  const sidebar = document.getElementById("sidebar");
-  const overlay = document.getElementById("overlay");
+  var sidebar = document.getElementById("sidebar");
+  var overlay = document.getElementById("overlay");
 
   if (sidebar) sidebar.classList.remove("open");
   if (overlay) overlay.style.display = "none";
@@ -32,7 +32,7 @@ window.logout = function () {
 // ================= LOAD USER =================
 document.addEventListener("DOMContentLoaded", async function () {
 
-  const userId = localStorage.getItem("userId");
+  var userId = localStorage.getItem("userId");
 
   if (!userId) {
     window.location.href = "index.html";
@@ -41,48 +41,41 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   try {
 
-    const res = await fetch(`${BASE_URL}/user/${userId}`);
+    var res = await fetch(BASE_URL + "/user/" + userId);
 
+    // 🔥 If invalid user → logout
     if (!res.ok) {
       localStorage.clear();
       window.location.href = "index.html";
       return;
     }
 
-    const user = await res.json();
+    var user = await res.json();
 
-    // ===== USER NAME + PHONE =====
-    const homeName = document.getElementById("homeUserName");
-    const sbName = document.getElementById("usernameSb");
-    const sbPhone = document.getElementById("phoneSb");
+    var homeName = document.getElementById("homeUserName");
+    var sbName = document.getElementById("usernameSb");
+    var sbPhone = document.getElementById("phoneSb");
 
     if (homeName) homeName.innerText = user.username || "User";
     if (sbName) sbName.innerText = user.username || "User";
     if (sbPhone) sbPhone.innerText = user.phone || "";
 
-    // ===== SIDEBAR PROFILE IMAGE =====
-    const sbImage = document.getElementById("sidebarImage");
+    // ================= GREETING =================
+    var hour = new Date().getHours();
+    var greet = "Hello";
 
-    if (sbImage) {
-      if (user.profileImage) {
-        sbImage.src = `${BASE_URL}/${user.profileImage}`;
-      } else {
-        sbImage.src = "../img/default.png"; // fallback image
-      }
-    }
+    if (hour < 12) greet = "Good Morning";
+    else if (hour < 18) greet = "Good Afternoon";
+    else greet = "Good Evening";
 
-    // ===== GREETING =====
-    const hour = new Date().getHours();
-    let greet = "Hello";
-
-    if (hour < 12) greet = "Good Morning 🌅";
-    else if (hour < 18) greet = "Good Afternoon ☀️";
-    else greet = "Good Evening 🌙";
-
-    const greetEl = document.getElementById("greeting");
+    var greetEl = document.getElementById("greeting");
     if (greetEl) greetEl.innerText = greet;
 
-    // ===== LOAD EXTRA DATA =====
+    // ================= LANGUAGE APPLY =================
+    if (typeof applyHomeLanguage === "function") {
+      applyHomeLanguage(user.username);
+    }
+
     loadWeather();
     loadPostCount();
 
@@ -97,14 +90,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 // ================= LOAD POST COUNT =================
 async function loadPostCount() {
   try {
-
-    const res = await fetch(`${BASE_URL}/posts/count`);
+    const res = await fetch(BASE_URL + "/posts/count");
     if (!res.ok) return;
 
     const data = await res.json();
 
     const badge = document.getElementById("companyCount");
-    if (badge) badge.innerText = data.count || 0;
+    if (badge) badge.innerText = data.count;
 
   } catch (err) {
     console.log("Count Error:", err);
