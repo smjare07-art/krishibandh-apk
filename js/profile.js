@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "https://krishibandh-backend.onrender.com";
 
 // LOGOUT
 function logout(){
@@ -18,6 +18,11 @@ document.addEventListener("DOMContentLoaded", async function(){
   try{
 
     const res = await fetch(`${BASE_URL}/user/${userId}`);
+
+    if(!res.ok){
+      throw new Error("User fetch failed");
+    }
+
     const user = await res.json();
 
     document.getElementById("pName").innerText = user.username || "-";
@@ -32,17 +37,17 @@ document.addEventListener("DOMContentLoaded", async function(){
 
     document.getElementById("pLocation").innerText = locationText || "-";
 
-    // PROFILE IMAGE
+    // ===== PROFILE IMAGE =====
     if(user.profileImage){
       document.getElementById("pImage").src =
-        BASE_URL + "/" + user.profileImage;
+        `${BASE_URL}/${user.profileImage}`;
     }
 
     // ===== MAP =====
     if(locationText){
 
       const geoRes = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${locationText}`
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(locationText)}`
       );
 
       const geoData = await geoRes.json();
@@ -52,15 +57,19 @@ document.addEventListener("DOMContentLoaded", async function(){
         const lat = geoData[0].lat;
         const lon = geoData[0].lon;
 
-        const map = L.map('map').setView([lat, lon], 13);
+        // Prevent duplicate map initialization
+        if (!window.profileMap) {
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '© OpenStreetMap'
-        }).addTo(map);
+          window.profileMap = L.map('map').setView([lat, lon], 13);
 
-        L.marker([lat, lon]).addTo(map)
-          .bindPopup("Farmer Location")
-          .openPopup();
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+          }).addTo(window.profileMap);
+
+          L.marker([lat, lon]).addTo(window.profileMap)
+            .bindPopup("Farmer Location")
+            .openPopup();
+        }
       }
     }
 
