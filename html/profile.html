@@ -1,31 +1,47 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="mr">
-  <head>
-    <meta charset="UTF-8" />
-    <title>माझी प्रोफाइल</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../css/profile.css" />
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <title>माझी प्रोफाइल</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <body>
-    <div class="topbar">
-      <span onclick="history.back()">⬅</span>
-      <h2>माझी प्रोफाइल</h2>
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/profile.css">
+
+  <!-- Leaflet Map CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <span onclick="history.back()">⬅</span>
+    <h2>माझी प्रोफाइल</h2>
+  </div>
+
+  <div class="profile-card">
+
+    <div class="avatar">
+      <img id="pImage" src="../images/user.png">
     </div>
 
-    <div class="profile-card">
-      <div class="avatar">👤</div>
-
+    <div class="info">
       <p><b>नाव:</b> <span id="pName">Loading...</span></p>
       <p><b>Email:</b> <span id="pEmail">Loading...</span></p>
       <p><b>Phone:</b> <span id="pPhone">Loading...</span></p>
-      <p><b>Location:</b> <span id="pLocation">Loading...</span></p>
+      <p><b>Address:</b> <span id="pLocation">Loading...</span></p>
+      <p><b>Role:</b> <span id="pRole">Loading...</span></p>
     </div>
 
-    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
 
-    <!-- JS FILES -->
-    
-    <script  src="../js/profile.js"></script>
-  </body>
+  <!-- MAP -->
+  <div id="map"></div>
+
+  <button class="logout-btn" onclick="logout()">Logout</button>
+
+  <script src="../js/profile.js"></script>
+
+</body>
 </html>

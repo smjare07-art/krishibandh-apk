@@ -10,7 +10,7 @@ import fs from "fs";
 import nodemailer from "nodemailer";
 import Razorpay from "razorpay";
 import PDFDocument from "pdfkit";
-
+import axios from "axios";
 
 dotenv.config(); // 🔥 MUST BE HERE
 

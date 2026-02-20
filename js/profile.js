@@ -1,51 +1,70 @@
-// ================= LOGOUT =================
-window.logout = function () {
+const BASE_URL = "http://localhost:5000";
+
+// LOGOUT
+function logout(){
   localStorage.clear();
   window.location.href = "index.html";
-};
+}
 
-// ================= LOAD PROFILE =================
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", async function(){
 
-  var userId = localStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
 
-  if (!userId) {
+  if(!userId){
     window.location.href = "index.html";
     return;
   }
 
-  try {
+  try{
 
-    var res = await fetch("http://localhost:5000/user/" + userId);
-
-    if (!res.ok) {
-      console.log("User fetch failed");
-      return;
-    }
-
-    var user = await res.json();
+    const res = await fetch(`${BASE_URL}/user/${userId}`);
+    const user = await res.json();
 
     document.getElementById("pName").innerText = user.username || "-";
     document.getElementById("pEmail").innerText = user.email || "-";
     document.getElementById("pPhone").innerText = user.phone || "-";
+    document.getElementById("pRole").innerText = user.role || "-";
 
-    // Location Format
-    var locationText = "-";
+    const locationText =
+      `${user.village || ""}, ${user.district || ""}, ${user.state || ""}`
+        .replace(/^, |, $/g,"")
+        .replace(/, ,/g,",");
 
-    if (user.state || user.district || user.village) {
-      locationText =
-        (user.village || "") +
-        ", " +
-        (user.district || "") +
-        ", " +
-        (user.state || "");
+    document.getElementById("pLocation").innerText = locationText || "-";
 
-      locationText = locationText.replace(/^, |, $/g, "").replace(/, ,/g, ",");
+    // PROFILE IMAGE
+    if(user.profileImage){
+      document.getElementById("pImage").src =
+        BASE_URL + "/" + user.profileImage;
     }
 
-    document.getElementById("pLocation").innerText = locationText;
+    // ===== MAP =====
+    if(locationText){
 
-  } catch (err) {
+      const geoRes = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${locationText}`
+      );
+
+      const geoData = await geoRes.json();
+
+      if(geoData.length > 0){
+
+        const lat = geoData[0].lat;
+        const lon = geoData[0].lon;
+
+        const map = L.map('map').setView([lat, lon], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        L.marker([lat, lon]).addTo(map)
+          .bindPopup("Farmer Location")
+          .openPopup();
+      }
+    }
+
+  }catch(err){
     console.log("Profile load error:", err);
   }
 
