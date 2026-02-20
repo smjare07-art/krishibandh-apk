@@ -328,7 +328,36 @@ app.post("/apply", upload.single("image"), async (req, res) => {
   }
 });
 
+// ================= ADMIN - GET ALL USERS =================
+app.get("/admin/users", async (req, res) => {
+  try {
 
+    const users = await User.find().select("-password").sort({ createdAt: -1 });
+
+    res.json(users);
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+// ================= ADMIN - DELETE USER =================
+app.delete("/admin/user/:id", async (req, res) => {
+  try {
+
+    const user = await User.findByIdAndDelete(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "User deleted successfully" });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 // Get Company Applications
 app.get("/company/applications/:companyId", async (req, res) => {
   try {
