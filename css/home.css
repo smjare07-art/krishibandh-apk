@@ -320,3 +320,9 @@ body {
 .bottom-nav > div:active {
   transform: scale(0.95);
 }
+.avatar img{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  object-fit:cover;
+}
