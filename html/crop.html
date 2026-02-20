@@ -11,6 +11,7 @@
 
 <input type="file" accept="image/*" onchange="previewImage(event)">
 <br><br>
+
 <img id="preview" width="200" style="display:none;">
 <br><br>
 
@@ -36,15 +37,19 @@ async function analyzeImage() {
   }
 
   const formData = new FormData();
-  formData.append("image", selectedFile);
+  formData.append("file", selectedFile);   // ✅ IMPORTANT CHANGE
 
   document.getElementById("resultText").innerText = "⏳ analysing...";
+  document.getElementById("suggestionText").innerText = "";
 
   try {
-    const res = await fetch("https://smjare-krishibandh-crop-analysis.hf.space/predict", {
-      method: "POST",
-      body: formData
-    });
+    const res = await fetch(
+      "https://smjare-krishibandh-crop-analysis.hf.space/predict",
+      {
+        method: "POST",
+        body: formData
+      }
+    );
 
     const data = await res.json();
 
@@ -55,12 +60,12 @@ async function analyzeImage() {
 
     document.getElementById("resultText").innerText =
       "🦠 " + data.disease + " (" + data.confidence + "%)";
+
   } catch (err) {
     document.getElementById("resultText").innerText = "❌ Server Error";
     console.log(err);
   }
 }
-
 </script>
 
 </body>
