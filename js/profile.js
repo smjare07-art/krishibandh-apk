@@ -1,6 +1,6 @@
 const BASE_URL = "https://krishibandh-backend.onrender.com";
 
-// ================= LOGOUT =================
+// LOGOUT
 function logout(){
   localStorage.clear();
   window.location.href = "index.html";
@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", async function(){
 
     const user = await res.json();
 
-    // ===== USER DATA =====
     document.getElementById("pName").innerText = user.username || "-";
     document.getElementById("pEmail").innerText = user.email || "-";
     document.getElementById("pPhone").innerText = user.phone || "-";
@@ -34,8 +33,7 @@ document.addEventListener("DOMContentLoaded", async function(){
     const locationText =
       `${user.village || ""}, ${user.district || ""}, ${user.state || ""}`
         .replace(/^, |, $/g,"")
-        .replace(/, ,/g,",")
-        .trim();
+        .replace(/, ,/g,",");
 
     document.getElementById("pLocation").innerText = locationText || "-";
 
@@ -45,48 +43,33 @@ document.addEventListener("DOMContentLoaded", async function(){
         `${BASE_URL}/${user.profileImage}`;
     }
 
-    // ================= MAP SECTION =================
+    // ===== MAP =====
     if(locationText){
 
-      // Ensure map div has height (safety)
-      const mapDiv = document.getElementById("map");
-      mapDiv.style.height = "300px";
-      mapDiv.style.width = "100%";
-
-      console.log("Searching Location:", locationText);
-
       const geoRes = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(locationText)}`,
-        { headers: { "Accept": "application/json" } }
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(locationText)}`
       );
 
       const geoData = await geoRes.json();
 
-      if(geoData && geoData.length > 0){
+      if(geoData.length > 0){
 
-        const lat = parseFloat(geoData[0].lat);
-        const lon = parseFloat(geoData[0].lon);
+        const lat = geoData[0].lat;
+        const lon = geoData[0].lon;
 
-        // Small delay to ensure DOM ready
-        setTimeout(() => {
+        // Prevent duplicate map initialization
+        if (!window.profileMap) {
 
-          if(!window.profileMap){
+          window.profileMap = L.map('map').setView([lat, lon], 13);
 
-            window.profileMap = L.map('map').setView([lat, lon], 13);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+          }).addTo(window.profileMap);
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              attribution: '© OpenStreetMap'
-            }).addTo(window.profileMap);
-
-            L.marker([lat, lon]).addTo(window.profileMap)
-              .bindPopup("Farmer Location")
-              .openPopup();
-          }
-
-        }, 300);
-
-      } else {
-        console.log("Location not found in OpenStreetMap");
+          L.marker([lat, lon]).addTo(window.profileMap)
+            .bindPopup("Farmer Location")
+            .openPopup();
+        }
       }
     }
 
