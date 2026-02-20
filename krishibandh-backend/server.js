@@ -92,7 +92,7 @@ const applicationSchema = new mongoose.Schema({
   postId: String,
   companyId: String,
   farmerId: String,
-
+companyName: String,
   quantity: String,
   price: String,        // farmer offered
   finalPrice: String,   // ✅ company final price
@@ -139,7 +139,8 @@ const upload = multer({ storage });
 // ================= ROUTES =================
 
 // ================= SIGNUP =================
-app.post("/signup", async (req, res) => {
+// ================= SIGNUP WITH PROFILE IMAGE =================
+app.post("/signup", upload.single("profileImage"), async (req, res) => {
   try {
 
     const {
@@ -167,7 +168,8 @@ app.post("/signup", async (req, res) => {
       state,
       district,
       village,
-      address
+      address,
+      profileImage: req.file ? "uploads/" + req.file.filename : ""
     });
 
     res.json({
