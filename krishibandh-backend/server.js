@@ -46,13 +46,37 @@ mongoose.connect(process.env.MONGO_URI)
 // ================= SCHEMAS =================
 
 // User
+// ================= USER SCHEMA =================
 const userSchema = new mongoose.Schema({
-  username: String,
-  email: { type: String, unique: true },
-  password: String,
-  role: { type: String, default: "farmer" }
-});
 
+  username: { type: String, required: true },
+
+  email: { 
+    type: String, 
+    unique: true, 
+    required: true 
+  },
+
+  password: { 
+    type: String, 
+    required: true 
+  },
+
+  phone: { type: String },
+
+  state: { type: String },
+  district: { type: String },
+  village: { type: String },
+  address: { type: String },
+
+  profileImage: { type: String },
+
+  role: { 
+    type: String, 
+    default: "farmer" 
+  }
+
+}, { timestamps: true });
 // Post
 const postSchema = new mongoose.Schema({
   companyId: String,
@@ -114,10 +138,20 @@ const upload = multer({ storage });
 
 // ================= ROUTES =================
 
-// Signup
+// ================= SIGNUP =================
 app.post("/signup", async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+
+    const {
+      username,
+      email,
+      password,
+      phone,
+      state,
+      district,
+      village,
+      address
+    } = req.body;
 
     const existing = await User.findOne({ email });
     if (existing)
@@ -125,19 +159,26 @@ app.post("/signup", async (req, res) => {
 
     const hashed = await bcrypt.hash(password, 10);
 
-    await User.create({
+    const newUser = await User.create({
       username,
       email,
-      password: hashed
+      password: hashed,
+      phone,
+      state,
+      district,
+      village,
+      address
     });
 
-    res.json({ message: "Signup successful" });
+    res.json({
+      message: "Signup successful",
+      user: newUser
+    });
 
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
-
 // Login
 app.post("/login", async (req, res) => {
   try {
