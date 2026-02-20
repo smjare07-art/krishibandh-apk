@@ -44,10 +44,6 @@ pincodeInput.addEventListener("keyup", async () => {
 });
 
 
-// =========================
-// 🔐 SIGNUP FUNCTION (MongoDB Backend)
-// =========================
-
 window.signup = async function () {
 
   const username = document.getElementById("username").value.trim();
@@ -59,6 +55,7 @@ window.signup = async function () {
   const village = villageSelect.value;
   const password = document.getElementById("password").value;
   const confirmPassword = document.getElementById("confirmPassword").value;
+  const profileImage = document.getElementById("profileImage").files[0];
 
   if (!username || !email || !password || !pincode || !village) {
     alert("All fields required");
@@ -70,23 +67,26 @@ window.signup = async function () {
     return;
   }
 
+  const formData = new FormData();
+  formData.append("username", username);
+  formData.append("email", email);
+  formData.append("phone", phone);
+  formData.append("pincode", pincode);
+  formData.append("state", state);
+  formData.append("district", district);
+  formData.append("village", village);
+  formData.append("password", password);
+
+  if (profileImage) {
+    formData.append("profileImage", profileImage);
+  }
+
   try {
 
     const res = await fetch("https://krishibandh-backend.onrender.com/signup", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    username,
-    email,
-    phone,
-    pincode,
-    state,
-    district,
-    village,
-    password
-  })
-});
-
+      method: "POST",
+      body: formData
+    });
 
     const data = await res.json();
 
