@@ -82,7 +82,7 @@ const postSchema = new mongoose.Schema({
   companyId: String,
   companyName: String,
   crop: String,
-  quantity: String,
+ quantity: { type: Number, required: true },
   price: String,
   image: String
 }, { timestamps: true });
@@ -93,7 +93,7 @@ const applicationSchema = new mongoose.Schema({
   companyId: String,
   farmerId: String,
 companyName: String,
-  quantity: String,
+ quantity: { type: Number, required: true },
   price: String,        // farmer offered
   finalPrice: String,   // ✅ company final price
 
@@ -385,18 +385,42 @@ app.get("/farmer/applications/:farmerId", async (req, res) => {
 });
 app.put("/application/status/:id", async (req, res) => {
   try {
-
     const { status, finalPrice } = req.body;
 
     const appData = await Application.findById(req.params.id);
-
     if (!appData)
-      return res.status(404).json({ message: "Not found" });
+      return res.status(404).json({ message: "Application not found" });
+
+    // 🔥 Prevent double accept
+    if (appData.status === "accepted") {
+      return res.status(400).json({ message: "Already accepted" });
+    }
 
     appData.status = status;
 
     if (finalPrice) {
       appData.finalPrice = finalPrice;
+    }
+
+    // ✅ IF ACCEPTED → REDUCE POST QUANTITY
+    if (status === "accepted") {
+
+      const post = await Post.findById(appData.postId);
+      if (!post)
+        return res.status(404).json({ message: "Post not found" });
+
+      if (post.quantity < appData.quantity) {
+        return res.status(400).json({ message: "Not enough stock available" });
+      }
+
+      post.quantity -= appData.quantity;
+
+      // 🔥 If stock खत्म झाला तर post delete कर
+      if (post.quantity <= 0) {
+        await Post.findByIdAndDelete(post._id);
+      } else {
+        await post.save();
+      }
     }
 
     await appData.save();
@@ -407,8 +431,6 @@ app.put("/application/status/:id", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-
 
 // ================= SEND MESSAGE =================
 app.post("/chat/send", async (req, res) => {
