@@ -1,39 +1,76 @@
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: #f4f8f2;
+  background: #f2f7f3;
   color: #333;
 }
 
-.container {
-  max-width: 900px;
-  margin: 50px auto;
-  padding: 30px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+/* Hero Section */
+.hero {
+  background: linear-gradient(135deg, #2e7d32, #66bb6a);
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
 }
 
-h1 {
-  text-align: center;
-  color: #2e7d32;
+.hero h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.hero p {
+  margin-top: 10px;
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+/* Main Container */
+.container {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+/* Card Design */
+.card {
+  background: white;
   margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
 }
 
 h2 {
-  margin-top: 30px;
-  color: #388e3c;
+  color: #2e7d32;
+  margin-bottom: 10px;
+  font-size: 18px;
 }
 
 p {
-  line-height: 1.7;
-  font-size: 16px;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 ul {
-  padding-left: 20px;
+  padding-left: 18px;
 }
 
 li {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .hero h1 {
+    font-size: 34px;
+  }
+  .hero p {
+    font-size: 17px;
+  }
 }
