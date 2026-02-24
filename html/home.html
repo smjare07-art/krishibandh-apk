@@ -115,8 +115,14 @@
 </section>
 
 <!-- BOT -->
-<button class="bot" onclick="go('bot.html')"><img src="../img/79b9cd72-2c06-441c-93ce-cf6232e4c26e.png" alt=""></button>
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+<script type="module">
+	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
 
+	createChat({
+		webhookUrl: 'https://swapnajeet.app.n8n.cloud/webhook/da25affb-e8ad-40a6-bcd3-279662c82591/chat'
+	});
+</script>
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
   <div><img src="../img/b9c81b2e-6ae0-48b7-9130-33b5fc4f53cc (1).png" alt=""><span id="navHome"></span></div>
