@@ -21,6 +21,15 @@
 
 </div>
 
-<script src="../js/chat.js"></script>
+<!-- ✅ n8n Chat Widget Script -->
+<script type="module">
+  import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+  createChat({
+    webhookUrl: 'https://your-n8n-domain.com/webhook/chat' 
+  });
+</script>
+
+
 </body>
 </html>
