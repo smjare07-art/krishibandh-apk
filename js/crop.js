@@ -1,83 +1,35 @@
-let model;
+document.getElementById("detectBtn").addEventListener("click", uploadImage);
 
-// 🧠 Disease labels (model training प्रमाणे)
-const classes = [
-  "Healthy",
-  "Leaf Blight",
-  "Leaf Spot",
-  "Rust"
-];
+async function uploadImage() {
+  console.log("Button clicked ✅");
 
-// 🚀 Load TensorFlow.js model
-async function loadModel() {
-  document.getElementById("loading").innerText = "⏳ AI Model लोड होत आहे...";
-  document.getElementById("loading").style.display = "block";
+  const fileInput = document.getElementById("imageInput");
+  const resultDiv = document.getElementById("result");
 
-  model = await tf.loadLayersModel("../model/model.json");
-
-  document.getElementById("loading").style.display = "none";
-  console.log("✅ Crop AI Model Loaded");
-}
-loadModel();
-
-// 📷 Image preview
-document.getElementById("cropImage").addEventListener("change", (e) => {
-  const img = document.getElementById("preview");
-  img.src = URL.createObjectURL(e.target.files[0]);
-  img.style.display = "block";
-
-  document.getElementById("result").innerText = "";
-  document.getElementById("suggestion").innerText = "";
-});
-
-// 🔍 Predict disease
-async function predictCrop() {
-  if (!model) {
-    alert("AI model अजून लोड होत आहे");
+  if (!fileInput.files.length) {
+    alert("Select image first");
     return;
   }
 
-  const img = document.getElementById("preview");
-  if (!img.src) {
-    alert("कृपया फोटो अपलोड करा");
-    return;
-  }
+  const formData = new FormData();
+  formData.append("file", fileInput.files[0]);
 
-  document.getElementById("loading").innerText = "🔍 तपासणी चालू आहे...";
-  document.getElementById("loading").style.display = "block";
+  resultDiv.innerHTML = "Uploading... ⏳";
 
-  const tensor = tf.browser
-    .fromPixels(img)
-    .resizeNearestNeighbor([224, 224])
-    .toFloat()
-    .expandDims()
-    .div(255.0);
+  try {
+    const response = await fetch("https://shubhamjare05.app.n8n.cloud/webhook/d802b95a-f95b-4b12-aa15-d3210906acb8", {
+      method: "POST",
+      body: formData
+    });
 
-  const prediction = model.predict(tensor);
-  const index = prediction.argMax(-1).dataSync()[0];
-  const disease = classes[index];
+    const text = await response.text();
 
-  document.getElementById("loading").style.display = "none";
-  document.getElementById("result").innerText = "🦠 रोग: " + disease;
-  document.getElementById("suggestion").innerText = getSuggestion(disease);
-}
+    console.log("RAW:", text);
 
-// 🌾 Marathi suggestions (REALISTIC)
-function getSuggestion(disease) {
-  switch (disease) {
-    case "Healthy":
-      return "✅ पीक निरोगी आहे. कोणतीही फवारणी आवश्यक नाही.";
+    resultDiv.innerHTML = text || "No response ❌";
 
-    case "Leaf Blight":
-      return "⚠️ पान करपा आढळला आहे. मॅन्कोझेब 2.5 ग्रॅम/लिटर फवारणी करा.";
-
-    case "Leaf Spot":
-      return "⚠️ पानावरील डाग रोग. कॉपर ऑक्सीक्लोराइड वापरा.";
-
-    case "Rust":
-      return "⚠️ तांबेरा रोग. ट्रायडिमेफॉन किंवा हेक्झाकोनाझोल फवारणी करा.";
-
-    default:
-      return "सल्ल्यासाठी कृषी अधिकाऱ्यांचा सल्ला घ्या.";
+  } catch (err) {
+    console.error(err);
+    resultDiv.innerHTML = "Request failed ❌";
   }
 }

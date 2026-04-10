@@ -1,0 +1,30 @@
+body {
+  font-family: Arial;
+  background: #f4f9f4;
+  text-align: center;
+}
+
+.container {
+  margin-top: 100px;
+}
+
+h1 {
+  color: green;
+}
+
+input {
+  margin: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  background: green;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 18px;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Truck Live Location</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+</head>
+<body>
+
+<h2>Truck Live Tracking</h2>
+<div id="map" style="height:500px;"></div>
+
+<script>
+  var map = L.map('map').setView([20.5937, 78.9629], 5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  var marker = L.marker([20.5937, 78.9629]).addTo(map);
+
+  function fetchLocation() {
+    fetch("/get-location/TRUCK123")
+      .then(res => res.json())
+      .then(data => {
+        if (data) {
+          var lat = data.latitude;
+          var lng = data.longitude;
+          marker.setLatLng([lat, lng]);
+          map.setView([lat, lng], 15);
+        }
+      });
+  }
+
+  setInterval(fetchLocation, 5000);
+</script>
+
+</body>
+</html>

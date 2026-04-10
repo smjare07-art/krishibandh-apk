@@ -1,72 +1,21 @@
 <!DOCTYPE html>
-<html lang="mr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Crop Disease Detection</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Disease Detector 🌱</title>
+  <link rel="stylesheet" href="../css/crop.css">
 </head>
 <body>
 
-<h2>🌾 Crop Disease Detection</h2>
+<div class="container">
+  <h1>🌱 Crop Disease Detector</h1>
 
-<input type="file" accept="image/*" onchange="previewImage(event)">
-<br><br>
+  <input type="file" id="imageInput" accept="image/*">
+ <button id="detectBtn">Detect</button>
 
-<img id="preview" width="200" style="display:none;">
-<br><br>
+  <div id="result"></div>
+</div>
 
-<button onclick="analyzeImage()">🔍 Analyse Crop</button>
-
-<h3 id="resultText"></h3>
-<p id="suggestionText"></p>
-
-<script>
-let selectedFile;
-
-function previewImage(event) {
-  selectedFile = event.target.files[0];
-  const img = document.getElementById("preview");
-  img.src = URL.createObjectURL(selectedFile);
-  img.style.display = "block";
-}
-
-async function analyzeImage() {
-  if (!selectedFile) {
-    alert("फोटो निवडा");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("file", selectedFile);   // ✅ IMPORTANT CHANGE
-
-  document.getElementById("resultText").innerText = "⏳ analysing...";
-  document.getElementById("suggestionText").innerText = "";
-
-  try {
-    const res = await fetch(
-      "https://smjare-krishibandh-crop-analysis.hf.space/predict",
-      {
-        method: "POST",
-        body: formData
-      }
-    );
-
-    const data = await res.json();
-
-    if (data.error) {
-      document.getElementById("resultText").innerText = "❌ " + data.error;
-      return;
-    }
-
-    document.getElementById("resultText").innerText =
-      "🦠 " + data.disease + " (" + data.confidence + "%)";
-
-  } catch (err) {
-    document.getElementById("resultText").innerText = "❌ Server Error";
-    console.log(err);
-  }
-}
-</script>
-
+<script src="../js/crop.js"></script>
 </body>
 </html>
